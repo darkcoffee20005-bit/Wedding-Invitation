@@ -1,0 +1,29 @@
+# أسرار وبيئة
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# اعتماديات ومخرجات
+node_modules/
+test-results/
+playwright-report/
+blob-report/
+.cache/
+dist/
+*.log
+
+# Supabase CLI المحلي
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+
+# ملفات النظام والمحررات
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ملفات مصدّرة قد تحتوي بيانات المدعوين
+*.csv

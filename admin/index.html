@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>لوحة الإدارة — زفاف يوسف وشذى</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co http://127.0.0.1:* http://localhost:*; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'none'">
+  <link rel="icon" href="../assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Tajawal:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__brand">
+      <img src="../assets/icons/favicon.svg" alt="" width="34" height="34">
+      <div>
+        <p class="topbar__title">لوحة إدارة الدعوة</p>
+        <p class="topbar__sub">زفاف يوسف وشذى</p>
+      </div>
+    </div>
+    <div class="topbar__user" id="user-box" hidden>
+      <span class="topbar__email" id="user-email"></span>
+      <button type="button" class="btn btn--light btn--sm" id="logout-btn">تسجيل الخروج</button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <!-- تحميل -->
+    <section class="view view--center" id="view-loading" aria-live="polite">
+      <div class="spinner spinner--lg" aria-hidden="true"></div>
+      <p>جارٍ التحقق من الجلسة…</p>
+    </section>
+
+    <!-- غير مهيأ -->
+    <section class="view view--center" id="view-config" hidden>
+      <div class="card card--narrow">
+        <h1 class="card__title">لم يتم ربط Supabase بعد</h1>
+        <p>أضف رابط المشروع والمفتاح العام (anon) في الملف <code>js/config.js</code> ثم أعد تحميل الصفحة. راجع ملف README.</p>
+      </div>
+    </section>
+
+    <!-- تسجيل الدخول -->
+    <section class="view view--center" id="view-login" hidden>
+      <form class="card card--narrow login" id="login-form" novalidate>
+        <h1 class="card__title">تسجيل دخول المدير</h1>
+        <p class="muted">هذه الصفحة مخصصة لإدارة الردود فقط. لا يمكن إنشاء حساب من هنا.</p>
+        <div class="banner banner--warning" id="login-notice" role="status" hidden></div>
+        <label class="field">
+          <span class="field__label">البريد الإلكتروني</span>
+          <input class="input" type="email" id="login-email" autocomplete="username" required dir="ltr">
+        </label>
+        <label class="field">
+          <span class="field__label">كلمة المرور</span>
+          <input class="input" type="password" id="login-password" autocomplete="current-password" required dir="ltr">
+        </label>
+        <p class="form-error" id="login-error" role="alert" hidden></p>
+        <button type="submit" class="btn btn--primary btn--block" id="login-submit">
+          <span class="spinner" aria-hidden="true"></span><span class="btn__label">دخول</span>
+        </button>
+      </form>
+    </section>
+
+    <!-- غير مصرح -->
+    <section class="view view--center" id="view-forbidden" hidden>
+      <div class="card card--narrow">
+        <h1 class="card__title">غير مصرح</h1>
+        <p>هذا الحساب لا يملك صلاحية الإدارة. تم تسجيل خروجك.</p>
+        <button type="button" class="btn btn--primary" id="forbidden-back">العودة لتسجيل الدخول</button>
+      </div>
+    </section>
+
+    <!-- لوحة التحكم -->
+    <section class="view" id="view-dashboard" hidden>
+      <nav class="tabs" role="tablist" aria-label="أقسام اللوحة">
+        <button class="tab" role="tab" id="tab-responses" aria-controls="panel-responses" aria-selected="true">الردود والإحصائيات</button>
+        <button class="tab" role="tab" id="tab-invitations" aria-controls="panel-invitations" aria-selected="false" tabindex="-1">الدعوات الشخصية</button>
+        <button class="tab" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1">إعدادات الحفل</button>
+        <button class="tab" role="tab" id="tab-audit" aria-controls="panel-audit" aria-selected="false" tabindex="-1">سجل العمليات</button>
+      </nav>
+
+      <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+      <!-- الردود -->
+      <div class="panel" role="tabpanel" id="panel-responses" aria-labelledby="tab-responses">
+        <div class="stats" id="stats">
+          <article class="stat"><p class="stat__label">إجمالي الردود</p><p class="stat__value" data-stat="total_responses">—</p><p class="stat__hint">عدد الردود وليس الأشخاص</p></article>
+          <article class="stat"><p class="stat__label">ردود مؤكدة للحضور</p><p class="stat__value" data-stat="attending_responses">—</p></article>
+          <article class="stat"><p class="stat__label">الاعتذارات</p><p class="stat__value" data-stat="declined_responses">—</p></article>
+          <article class="stat stat--accent"><p class="stat__label">إجمالي البالغين المتوقع حضورهم</p><p class="stat__value" data-stat="expected_guests">—</p><p class="stat__hint">مجموع أعداد الردود المؤكدة فقط</p></article>
+          <article class="stat"><p class="stat__label">متوسط الحضور لكل رد مؤكد</p><p class="stat__value" data-stat="average_guests_per_attending">—</p></article>
+          <article class="stat" id="stat-pending" hidden><p class="stat__label">دعوات شخصية لم تُرد بعد</p><p class="stat__value" data-stat="invitations_pending">—</p><p class="stat__hint" id="stat-pending-hint"></p></article>
+        </div>
+
+        <div class="charts">
+          <article class="card chart-card">
+            <h2 class="card__title card__title--sm">المؤكدون مقابل المعتذرين</h2>
+            <div id="chart-split" class="chart"></div>
+          </article>
+          <article class="card chart-card">
+            <h2 class="card__title card__title--sm">تطور الردود يوميًا</h2>
+            <div id="chart-timeline" class="chart"></div>
+          </article>
+          <article class="card chart-card">
+            <h2 class="card__title card__title--sm">تراكم عدد البالغين المتوقع حضورهم</h2>
+            <div id="chart-guests" class="chart"></div>
+          </article>
+        </div>
+
+        <article class="card">
+          <div class="toolbar">
+            <label class="toolbar__search">
+              <span class="visually-hidden">البحث بالاسم</span>
+              <input class="input" type="search" id="search-input" placeholder="ابحث بالاسم…" maxlength="80">
+            </label>
+            <label>
+              <span class="visually-hidden">التصفية حسب الحالة</span>
+              <select class="input" id="filter-select">
+                <option value="">كل الحالات</option>
+                <option value="attending">سيحضر</option>
+                <option value="declined">معتذر</option>
+              </select>
+            </label>
+            <label>
+              <span class="visually-hidden">الترتيب</span>
+              <select class="input" id="sort-select">
+                <option value="created_at.desc">الأحدث أولًا</option>
+                <option value="created_at.asc">الأقدم أولًا</option>
+                <option value="updated_at.desc">آخر تعديل</option>
+                <option value="guest_name.asc">الاسم (أ ← ي)</option>
+                <option value="guest_name.desc">الاسم (ي ← أ)</option>
+                <option value="guest_count.desc">العدد (الأكبر أولًا)</option>
+                <option value="guest_count.asc">العدد (الأصغر أولًا)</option>
+              </select>
+            </label>
+            <div class="toolbar__actions">
+              <button type="button" class="btn btn--sm" id="refresh-btn">تحديث البيانات</button>
+              <button type="button" class="btn btn--sm" id="add-response-btn">إضافة رد يدوي</button>
+              <button type="button" class="btn btn--sm btn--primary" id="export-btn">تصدير CSV</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table" id="responses-table">
+              <caption class="visually-hidden">ردود المدعوين</caption>
+              <thead>
+                <tr>
+                  <th scope="col"><button type="button" class="th-sort" data-sort="guest_name">اسم المدعو</button></th>
+                  <th scope="col">حالة الحضور</th>
+                  <th scope="col"><button type="button" class="th-sort" data-sort="guest_count">عدد البالغين</button></th>
+                  <th scope="col">الرسالة</th>
+                  <th scope="col"><button type="button" class="th-sort" data-sort="created_at">وقت الإرسال</button></th>
+                  <th scope="col"><button type="button" class="th-sort" data-sort="updated_at">آخر تعديل</button></th>
+                  <th scope="col">الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="responses-body"></tbody>
+            </table>
+          </div>
+          <p class="empty" id="responses-empty" hidden></p>
+          <div class="pagination">
+            <p class="muted" id="page-info" aria-live="polite"></p>
+            <div class="pagination__controls">
+              <button type="button" class="btn btn--sm" id="prev-page">السابق</button>
+              <button type="button" class="btn btn--sm" id="next-page">التالي</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- الدعوات -->
+      <div class="panel" role="tabpanel" id="panel-invitations" aria-labelledby="tab-invitations" hidden>
+        <article class="card">
+          <h2 class="card__title card__title--sm">إنشاء دعوة شخصية</h2>
+          <p class="muted">لكل دعوة رابط برمز عشوائي قوي (192 بت). يُعرض الرابط مرة واحدة فقط عند الإنشاء — انسخه أو شاركه فورًا. تحتفظ القاعدة ببصمة الرمز فقط، ويمكن إصدار رابط جديد لاحقًا (يُبطل القديم).</p>
+          <form class="inv-form" id="invitation-form" novalidate>
+            <label class="field">
+              <span class="field__label">اسم المدعو أو العائلة *</span>
+              <input class="input" id="inv-label" maxlength="120" required>
+            </label>
+            <label class="field">
+              <span class="field__label">حد خاص لعدد البالغين (اختياري)</span>
+              <input class="input" id="inv-max" type="number" min="1" max="50" step="1" inputmode="numeric" dir="ltr" placeholder="الافتراضي من الإعدادات">
+            </label>
+            <label class="field field--wide">
+              <span class="field__label">ملاحظات داخلية (اختياري)</span>
+              <input class="input" id="inv-notes" maxlength="500">
+            </label>
+            <p class="form-error" id="inv-error" role="alert" hidden></p>
+            <button type="submit" class="btn btn--primary" id="inv-submit">إنشاء الدعوة</button>
+          </form>
+        </article>
+        <article class="card">
+          <div class="card__head">
+            <h2 class="card__title card__title--sm">قائمة الدعوات</h2>
+            <button type="button" class="btn btn--sm" id="inv-refresh">تحديث</button>
+          </div>
+          <div class="table-wrap">
+            <table class="table">
+              <caption class="visually-hidden">الدعوات الشخصية</caption>
+              <thead><tr><th scope="col">المدعو</th><th scope="col">الحد</th><th scope="col">حالة الرد</th><th scope="col">الحالة</th><th scope="col">أُنشئت</th><th scope="col">الإجراءات</th></tr></thead>
+              <tbody id="invitations-body"></tbody>
+            </table>
+          </div>
+          <p class="empty" id="invitations-empty" hidden>لا توجد دعوات شخصية بعد. يمكن للضيوف الرد عبر الرابط العام إن كان مسموحًا في الإعدادات.</p>
+        </article>
+      </div>
+
+      <!-- الإعدادات -->
+      <div class="panel" role="tabpanel" id="panel-settings" aria-labelledby="tab-settings" hidden>
+        <form class="settings-form" id="settings-form" novalidate>
+          <div class="card settings-intro">
+            <h2 class="card__title card__title--sm">إعدادات الحفل ونصوص الدعوة</h2>
+            <p class="muted">كل ما تعدّله هنا يظهر في صفحة الدعوة فور الحفظ (عند فتحها أو تحديثها). الحقول المعلَّمة بـ * مطلوبة؛ ترك الحقول الاختيارية فارغة يُخفي العنصر من الصفحة.</p>
+            <a class="btn btn--sm" href="../" target="_blank" rel="noopener">معاينة صفحة الدعوة ↗</a>
+          </div>
+
+          <fieldset class="card settings-group">
+            <legend class="settings-group__title">العروسان</legend>
+            <div class="grid-2">
+              <label class="field"><span class="field__label">اسم العريس *</span><input class="input" name="groom_name" maxlength="60" required></label>
+              <label class="field"><span class="field__label">اسم العروس *</span><input class="input" name="bride_name" maxlength="60" required></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="card settings-group">
+            <legend class="settings-group__title">الموعد</legend>
+            <div class="grid-2">
+              <label class="field"><span class="field__label">تاريخ الحفل (ميلادي) *</span><input class="input" name="event_date" type="date" required dir="ltr"></label>
+              <label class="field"><span class="field__label">وقت الحفل (24 ساعة) *</span><input class="input" name="event_time" type="time" required dir="ltr"></label>
+              <label class="field"><span class="field__label">المنطقة الزمنية (IANA) *</span><input class="input" name="timezone" required dir="ltr" placeholder="Asia/Baghdad" list="tz-list"></label>
+              <label class="field"><span class="field__label">مدة الحفل بالدقائق</span><input class="input" name="duration_minutes" type="number" min="15" max="1440" step="1" dir="ltr" placeholder="غير محددة"></label>
+            </div>
+            <datalist id="tz-list"><option value="Asia/Baghdad"><option value="Asia/Riyadh"><option value="Asia/Kuwait"><option value="Asia/Dubai"><option value="Asia/Amman"><option value="Europe/Istanbul"><option value="Europe/London"><option value="Europe/Berlin"><option value="America/New_York"></datalist>
+          </fieldset>
+
+          <fieldset class="card settings-group">
+            <legend class="settings-group__title">المكان والموقع</legend>
+            <div class="grid-2">
+              <label class="field"><span class="field__label">اسم القاعة *</span><input class="input" name="venue_name" maxlength="120" required></label>
+              <label class="field"><span class="field__label">العنوان *</span><input class="input" name="venue_address" maxlength="250" required></label>
+              <label class="field field--wide"><span class="field__label">رابط Google Maps الدقيق (يبدأ بـ https://)</span><input class="input" name="maps_url" type="url" dir="ltr" placeholder="عند تركه فارغًا يُستخدم رابط بحث باسم القاعة والعنوان"></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="card settings-group">
+            <legend class="settings-group__title">نصوص الافتتاحية</legend>
+            <div class="grid-2">
+              <label class="field field--wide"><span class="field__label">الآية أو العبارة الافتتاحية</span><textarea class="input" name="verse_text" rows="2" maxlength="400"></textarea></label>
+              <label class="field"><span class="field__label">السطر فوق الأسماء</span><input class="input" name="intro_line" maxlength="120"></label>
+              <label class="field"><span class="field__label">السطر تحت الأسماء</span><input class="input" name="tagline" maxlength="200"></label>
+              <label class="field field--wide"><span class="field__label">نص الدعوة</span><textarea class="input" name="invitation_message" rows="3" maxlength="1000"></textarea></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="card settings-group">
+            <legend class="settings-group__title">عناوين الأقسام</legend>
+            <div class="grid-2">
+              <label class="field"><span class="field__label">عنوان قسم الموعد *</span><input class="input" name="details_title" maxlength="80" required></label>
+              <label class="field"><span class="field__label">عنوان العد التنازلي *</span><input class="input" name="countdown_title" maxlength="80" required></label>
+              <label class="field"><span class="field__label">رسالة حلول الموعد *</span><input class="input" name="countdown_done_text" maxlength="200" required></label>
+              <label class="field"><span class="field__label">عنوان قسم المشاركة *</span><input class="input" name="actions_title" maxlength="80" required></label>
+              <label class="field"><span class="field__label">عنوان نموذج الرد *</span><input class="input" name="rsvp_title" maxlength="120" required></label>
+              <label class="field"><span class="field__label">النص تحت عنوان النموذج</span><input class="input" name="rsvp_lead" maxlength="300"></label>
+              <label class="field field--wide"><span class="field__label">عبارة التذييل</span><input class="input" name="footer_text" maxlength="200"></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="card settings-group">
+            <legend class="settings-group__title">ملاحظة الأطفال</legend>
+            <label class="check"><input type="checkbox" name="show_children_note"> إظهار الملاحظة في الصفحة ورسالة المشاركة</label>
+            <div class="grid-2">
+              <label class="field field--wide"><span class="field__label">عنوان الملاحظة *</span><input class="input" name="children_note_title" maxlength="120" required></label>
+              <label class="field field--wide"><span class="field__label">نص الملاحظة (كل سطر = فقرة)</span><textarea class="input" name="children_note_body" rows="4" maxlength="1000"></textarea></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="card settings-group">
+            <legend class="settings-group__title">المشاركة وواتساب</legend>
+            <div class="grid-2">
+              <label class="field"><span class="field__label">رابط الموقع المنشور (https://)</span><input class="input" name="site_url" type="url" dir="ltr" placeholder="يُضاف لرسالة واتساب وروابط الدعوات"></label>
+              <label class="field"><span class="field__label">رقم واتساب (اختياري، صيغة دولية)</span><input class="input" name="whatsapp_number" inputmode="tel" dir="ltr" placeholder="فارغ = يختار الضيف جهة الاتصال"></label>
+              <label class="field field--wide"><span class="field__label">العبارة الختامية لرسالة المشاركة</span><textarea class="input" name="share_closing_text" rows="2" maxlength="300"></textarea></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="card settings-group">
+            <legend class="settings-group__title">تأكيد الحضور</legend>
+            <div class="grid-2">
+              <label class="field"><span class="field__label">الحد الأعلى للبالغين في الرد الواحد *</span><input class="input" name="max_guests_per_response" type="number" min="1" max="50" step="1" required dir="ltr"></label>
+              <label class="field"><span class="field__label">آخر موعد لاستقبال الردود</span><input class="input" name="rsvp_deadline" type="datetime-local" dir="ltr"></label>
+            </div>
+            <div class="checks">
+              <label class="check"><input type="checkbox" name="rsvp_open"> استقبال الردود مفتوح</label>
+              <label class="check"><input type="checkbox" name="allow_open_rsvp"> السماح بالرد عبر الرابط العام (بدون دعوة شخصية)</label>
+              <label class="check"><input type="checkbox" name="show_calendar_button"> إظهار زر إضافة الحفل إلى التقويم</label>
+            </div>
+            <p class="muted">موعد الردود يُدخل بتوقيت جهازك الحالي ويُحفظ كلحظة زمنية مطلقة.</p>
+          </fieldset>
+
+          <div class="card settings-actions">
+            <p class="form-error" id="settings-error" role="alert" hidden></p>
+            <button type="submit" class="btn btn--primary" id="settings-submit">حفظ الإعدادات</button>
+            <button type="button" class="btn" id="settings-reset">تراجع عن التعديلات غير المحفوظة</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- السجل -->
+      <div class="panel" role="tabpanel" id="panel-audit" aria-labelledby="tab-audit" hidden>
+        <article class="card">
+          <div class="card__head">
+            <h2 class="card__title card__title--sm">آخر 100 عملية إدارية</h2>
+            <button type="button" class="btn btn--sm" id="audit-refresh">تحديث</button>
+          </div>
+          <p class="muted">السجل إلحاقي فقط ولا يمكن تعديله أو حذفه من الواجهة. لا يحتوي على كلمات مرور أو رموز.</p>
+          <div class="table-wrap">
+            <table class="table">
+              <caption class="visually-hidden">سجل العمليات</caption>
+              <thead><tr><th scope="col">الوقت</th><th scope="col">العملية</th><th scope="col">الوصف</th><th scope="col">الحقول المتغيرة</th><th scope="col">المدير</th></tr></thead>
+              <tbody id="audit-body"></tbody>
+            </table>
+          </div>
+          <p class="empty" id="audit-empty" hidden>لا توجد عمليات مسجلة بعد.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- نوافذ الحوار -->
+  <dialog class="dialog" id="details-dialog" aria-labelledby="details-title">
+    <h2 class="dialog__title" id="details-title">تفاصيل الرد</h2>
+    <dl class="details" id="details-list"></dl>
+    <div class="dialog__actions"><button type="button" class="btn" data-close>إغلاق</button></div>
+  </dialog>
+
+  <dialog class="dialog" id="edit-dialog" aria-labelledby="edit-title">
+    <form id="edit-form" novalidate>
+      <h2 class="dialog__title" id="edit-title">تعديل الرد</h2>
+      <label class="field"><span class="field__label">اسم المدعو</span><input class="input" name="guest_name" maxlength="80" required></label>
+      <fieldset class="field">
+        <legend class="field__label">حالة الحضور</legend>
+        <label class="check"><input type="radio" name="attendance" value="attending"> سيحضر</label>
+        <label class="check"><input type="radio" name="attendance" value="declined"> معتذر</label>
+      </fieldset>
+      <label class="field" id="edit-count-field"><span class="field__label">عدد البالغين</span><input class="input" name="guest_count" type="number" min="1" step="1" dir="ltr"></label>
+      <label class="field"><span class="field__label">الرسالة</span><textarea class="input" name="message" rows="3" maxlength="500"></textarea></label>
+      <p class="form-error" id="edit-error" role="alert" hidden></p>
+      <div class="dialog__actions">
+        <button type="submit" class="btn btn--primary" id="edit-submit">حفظ</button>
+        <button type="button" class="btn" data-close>إلغاء</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="dialog" id="confirm-dialog" aria-labelledby="confirm-title">
+    <h2 class="dialog__title" id="confirm-title">تأكيد</h2>
+    <p id="confirm-text"></p>
+    <div class="dialog__actions">
+      <button type="button" class="btn btn--danger" id="confirm-ok">تأكيد</button>
+      <button type="button" class="btn" data-close>إلغاء</button>
+    </div>
+  </dialog>
+
+  <dialog class="dialog" id="link-dialog" aria-labelledby="link-title">
+    <h2 class="dialog__title" id="link-title">رابط الدعوة</h2>
+    <p class="banner banner--warning">انسخ هذا الرابط الآن؛ لن يُعرض مرة أخرى. أي شخص يملك الرابط يستطيع الرد باسم هذه الدعوة.</p>
+    <label class="field"><span class="field__label" id="link-for"></span><input class="input" id="link-value" readonly dir="ltr"></label>
+    <div class="dialog__actions">
+      <button type="button" class="btn btn--primary" id="link-copy">نسخ الرابط</button>
+      <a class="btn" id="link-whatsapp" target="_blank" rel="noopener noreferrer" href="#">إرسال عبر واتساب</a>
+      <button type="button" class="btn" data-close>إغلاق</button>
+    </div>
+  </dialog>
+
+  <div class="chart-tooltip" id="chart-tooltip" role="tooltip" hidden></div>
+
+  <script src="../js/vendor/supabase.js"></script>
+  <script type="module" src="../js/admin-dashboard.js"></script>
+</body>
+</html>

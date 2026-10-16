@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 80" width="400" height="80" fill="none" color="#C2A063">
+<path d="M200 40 C 260 40, 310 20, 375 30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(243.5 37.0) rotate(35) scale(0.91)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(265.4 34.1) rotate(-35) scale(0.87)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(289.0 30.8) rotate(35) scale(0.82)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(311.2 28.4) rotate(-35) scale(0.77)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(334.0 27.2) rotate(35) scale(0.73)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(355.9 27.9) rotate(-35) scale(0.69)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<circle cx="378" cy="30" r="2.6" fill="currentColor"/>
+<path d="M200 40 C 140 40, 90 20, 25 30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(156.5 37.0) rotate(145) scale(0.91)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(134.6 34.1) rotate(215) scale(0.87)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(111.0 30.8) rotate(145) scale(0.82)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(88.8 28.4) rotate(215) scale(0.77)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(66.0 27.2) rotate(145) scale(0.73)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<path d="M0 0 C 7 -7, 19 -7, 26 0 C 19 7, 7 7, 0 0 Z" transform="translate(44.1 27.9) rotate(215) scale(0.69)" fill="currentColor" fill-opacity=".18" stroke="currentColor" stroke-width="1.1"/>
+<circle cx="22" cy="30" r="2.6" fill="currentColor"/>
+<path d="M200 26 C 206 34, 206 46, 200 54 C 194 46, 194 34, 200 26 Z" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="1.2"/>
+<circle cx="200" cy="40" r="3.2" fill="currentColor"/>
+</svg>

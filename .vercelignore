@@ -1,0 +1,5 @@
+tests/
+supabase/
+scripts/
+node_modules/
+playwright.config.mjs

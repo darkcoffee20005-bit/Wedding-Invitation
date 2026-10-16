@@ -1,0 +1,35 @@
+# Netlify: موقع ثابت بدون خطوة بناء.
+[build]
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "no-referrer"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex, nofollow"
+
+# لا حاجة لنشر الاختبارات وملفات Supabase (لا تحتوي أسرارًا، لكن لا داعي لها)
+[[redirects]]
+  from = "/tests/*"
+  to = "/404"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/supabase/*"
+  to = "/404"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/scripts/*"
+  to = "/404"
+  status = 404
+  force = true

@@ -1,0 +1,8 @@
+# إعداد Supabase CLI (مختصر). إن شغّلت `supabase init` سيُكمَّل الملف تلقائيًا؛
+# احتفظ بقسم الدالة أدناه.
+project_id = "wedding-invitation"
+
+[functions.rsvp]
+# الدالة عامة للمدعوين ولا تتطلب JWT؛ الحماية عبر التحقق وتحديد المعدل
+# ودوال قاعدة البيانات المقيدة بـ service_role.
+verify_jwt = false
