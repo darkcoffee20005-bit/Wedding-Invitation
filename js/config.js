@@ -23,10 +23,10 @@ export const WEDDING_DEFAULTS = {
   event_time: '16:00',        // HH:MM بنظام 24 ساعة
   timezone: 'Asia/Baghdad',   // المنطقة الزمنية للحفل (وليس منطقة جهاز الزائر)
   venue_name: 'مزرعة الفرح',
-  venue_address: 'العابات على نهر دجلة',
+  venue_address: 'الغابات على نهر دجلة',
   maps_url: null,             // رابط دقيق (غير محدد بعد) — يُنشأ رابط بحث تلقائيًا عند غيابه
   duration_minutes: null,     // مدة الحفل غير محددة بعد
-  max_guests_per_response: 5, // الحد الأعلى للبالغين في الرد الواحد (يُعدَّل من لوحة الإدارة)
+  max_guests_per_response: 15, // الحد الأعلى للبالغين في الرد الواحد (يُعدَّل من لوحة الإدارة)
   show_calendar_button: true,
   allow_open_rsvp: true,
   rsvp_open: true,
