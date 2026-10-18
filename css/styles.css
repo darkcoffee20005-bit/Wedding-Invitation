@@ -432,7 +432,7 @@ fieldset[aria-invalid="true"] .choice__box { border-color: var(--danger); }
 .stepper__input::-webkit-outer-spin-button,
 .stepper__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
-.hp-field { position: absolute; width: 1px; height: 1px; overflow: hidden; inset-inline-start: -10000px; }
+.hp-field { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; opacity: 0; pointer-events: none; }
 
 .form-alert {
   margin: 0; padding: 14px 16px; border-radius: var(--radius-sm);

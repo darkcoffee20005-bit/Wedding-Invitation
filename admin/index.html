@@ -288,6 +288,17 @@
           </fieldset>
 
           <fieldset class="card settings-group">
+            <legend class="settings-group__title">التجربة التفاعلية</legend>
+            <div class="checks">
+              <label class="check"><input type="checkbox" name="intro_enabled"> مشهد الظرف ثلاثي الأبعاد عند فتح الدعوة (ختم الشمع)</label>
+              <label class="check"><input type="checkbox" name="effects_enabled"> المؤثرات الحية: غبار ذهبي، أوراق متساقطة، وإمالة ثلاثية الأبعاد</label>
+              <label class="check"><input type="checkbox" name="music_enabled"> موسيقى هادئة بعد فتح الظرف (يستطيع الضيف كتمها)</label>
+            </div>
+            <label class="field"><span class="field__label">رابط ملف موسيقى خاص (اختياري، https://)</span><input class="input" name="music_url" type="url" dir="ltr" placeholder="فارغ = لحن صندوق موسيقى هادئ يُؤلَّف داخل المتصفح"></label>
+            <p class="muted">استخدم موسيقى تملك حق استخدامها. يجب أن يكون الرابط مباشرًا لملف صوتي (mp3/m4a).</p>
+          </fieldset>
+
+          <fieldset class="card settings-group">
             <legend class="settings-group__title">تأكيد الحضور</legend>
             <div class="grid-2">
               <label class="field"><span class="field__label">الحد الأعلى للبالغين في الرد الواحد *</span><input class="input" name="max_guests_per_response" type="number" min="1" max="50" step="1" required dir="ltr"></label>

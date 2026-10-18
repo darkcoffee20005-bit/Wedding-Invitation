@@ -76,6 +76,16 @@ update public.wedding_settings set whatsapp_number = '+964 770 123 4567', taglin
 select pg_temp.check((select whatsapp_number = '9647701234567' and tagline = 'نص جديد' from public.wedding_settings), 'content: whatsapp digits & text normalized');
 update public.wedding_settings set whatsapp_number = null, tagline = default where id = 1;
 
+-- إعدادات التجربة التفاعلية (008)
+select pg_temp.check((select intro_enabled and effects_enabled and music_enabled and music_url is null from public.wedding_settings), 'experience: defaults on, no custom music');
+select pg_temp.check((select (public.rsvp_public_settings() ? 'intro_enabled') and (public.rsvp_public_settings() ? 'music_url')
+                      and (public.rsvp_public_settings() ->> 'effects_enabled')::boolean), 'experience: exposed in public settings');
+select pg_temp.expect_error($q$update public.wedding_settings set music_url = 'http://x.example/a.mp3' where id = 1$q$, '23514', 'experience: non-https music url rejected');
+update public.wedding_settings set music_url = 'https://cdn.example/song.mp3', intro_enabled = false where id = 1;
+select pg_temp.check((select (public.rsvp_public_settings() ->> 'intro_enabled')::boolean = false
+                      and public.rsvp_public_settings() ->> 'music_url' = 'https://cdn.example/song.mp3'), 'experience: changes reflected publicly');
+update public.wedding_settings set music_url = null, intro_enabled = true where id = 1;
+
 -- ---------- 2) الزائر المجهول anon: لا شيء ----------
 set role anon;
 select set_config('request.jwt.claims', '{"role":"anon"}', false) \g /dev/null

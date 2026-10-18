@@ -1,0 +1,413 @@
+/* =============================================================================
+   طبقة التجربة: الظرف ثلاثي الأبعاد، ختم الشمع، العمق والإمالة، اللمعان الذهبي،
+   العد التنازلي القلّاب، تقويم الشهر، الموسيقى، وزر الرد العائم.
+   ============================================================================= */
+
+/* ---------------------------------------------------------------- غطاء قبل ظهور الظرف */
+html.intro-pending, html.intro-pending body { overflow: hidden; }
+/* لا تمرير أفقي أبدًا (الإسقاط ثلاثي الأبعاد قد يتجاوز عرض الشاشة لحظيًا) */
+body { overflow-x: hidden; overflow-x: clip; }
+html.intro-pending:not(.intro-ready) body::before {
+  content: ""; position: fixed; inset: 0; z-index: 999;
+  background: radial-gradient(120% 90% at 50% 30%, #0F4C3A 0%, #062E23 55%, #021912 100%);
+}
+html.intro-pending .fab-rsvp,
+html.intro-pending .music-toggle,
+html.intro-pending .scroll-progress { visibility: hidden; }
+
+/* ---------------------------------------------------------------- مشهد الظرف */
+.intro {
+  position: fixed; inset: 0; z-index: 1000;
+  display: grid; place-items: center;
+  padding: 24px 16px;
+  perspective: 1600px;
+  background:
+    radial-gradient(60% 45% at 50% 42%, rgba(194, 160, 99, .16), transparent 70%),
+    radial-gradient(120% 90% at 50% 30%, #0F4C3A 0%, #062E23 55%, #021912 100%);
+  color: var(--ivory, #FBF7EE);
+  overflow: hidden;
+  transition: opacity .9s cubic-bezier(.2, .7, .2, 1), background-color .9s;
+}
+.intro::before { /* ملمس مخملي خفيف */
+  content: ""; position: absolute; inset: 0; opacity: .08; pointer-events: none;
+  background-image: radial-gradient(circle at 1px 1px, #EADCB9 1px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+.intro__canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.intro__glow {
+  position: absolute; width: 70vmin; height: 70vmin; border-radius: 50%;
+  background: radial-gradient(circle, rgba(242, 220, 160, .22), transparent 65%);
+  filter: blur(10px); pointer-events: none;
+  animation: introGlow 6s ease-in-out infinite;
+}
+@keyframes introGlow { 50% { transform: scale(1.12); opacity: .75; } }
+
+.intro__stage { position: relative; display: grid; justify-items: center; gap: clamp(18px, 4vh, 30px); transform-style: preserve-3d; }
+.intro__kicker {
+  margin: 0; font-family: var(--font-serif); font-size: clamp(1rem, 3.4vw, 1.2rem);
+  letter-spacing: .3em; color: var(--gold-200, #EADCB9);
+  animation: fadeUp 1.2s .2s both;
+}
+.intro__hint {
+  margin: 0; font-size: .95rem; color: rgba(251, 247, 238, .78);
+  animation: fadeUp 1.2s .8s both, hintPulse 2.6s 2s ease-in-out infinite;
+}
+@keyframes hintPulse { 50% { opacity: .45; } }
+.intro__skip {
+  position: absolute; top: max(16px, env(safe-area-inset-top)); inset-inline-end: 16px;
+  min-height: 44px; padding: 8px 16px; border-radius: 999px;
+  border: 1px solid rgba(234, 220, 185, .35); background: rgba(4, 36, 27, .35);
+  color: rgba(251, 247, 238, .85); font: inherit; font-size: .9rem; cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+.intro__skip:hover { background: rgba(4, 36, 27, .6); color: #fff; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } }
+
+/* ---------------------------------------------------------------- الظرف */
+.envelope {
+  --px: 0; --py: 0;
+  position: relative;
+  width: min(84vw, 440px);
+  aspect-ratio: 3 / 2;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(12deg + var(--py) * -7deg)) rotateY(calc(var(--px) * 12deg));
+  animation: envelopeIn 1.4s cubic-bezier(.2, .8, .2, 1) both, envelopeFloat 5s 1.4s ease-in-out infinite;
+  transition: transform .9s cubic-bezier(.2, .7, .2, 1), opacity .9s;
+}
+@keyframes envelopeIn { from { opacity: 0; transform: translateY(60px) rotateX(40deg) scale(.85); } }
+@keyframes envelopeFloat { 50% { translate: 0 -8px; } }
+
+.envelope__back, .envelope__liner, .envelope__pocket, .envelope__flap, .envelope__card {
+  position: absolute; inset: 0; border-radius: 10px;
+}
+.paper, .envelope__back, .pocket, .flap__face--front {
+  background-color: #F7F0E1;
+  background-image:
+    linear-gradient(135deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 45%),
+    radial-gradient(circle at 20% 80%, rgba(194, 160, 99, .08), transparent 40%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .25 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.envelope__back {
+  transform: translateZ(0);
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .7), 0 12px 30px -12px rgba(0, 0, 0, .5);
+}
+.envelope__liner {
+  transform: translateZ(.5px);
+  clip-path: polygon(0 0, 100% 0, 50% 52%);
+  background:
+    radial-gradient(circle at 1px 1px, rgba(234, 220, 185, .55) 1px, transparent 1.6px) 0 0 / 14px 14px,
+    linear-gradient(160deg, #15634B, #062E23);
+}
+.envelope__card {
+  inset: 7% 7% 7% 7%;
+  transform: translateZ(1px);
+  display: grid; align-content: center; justify-items: center; gap: 4px;
+  text-align: center;
+  background: linear-gradient(180deg, #FFFDF8, #FBF4E4);
+  border: 1px solid rgba(194, 160, 99, .7);
+  outline: 1px solid rgba(194, 160, 99, .35); outline-offset: -7px;
+  border-radius: 6px;
+  box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .45);
+  transition: transform 1.1s cubic-bezier(.2, .8, .2, 1), box-shadow 1.1s;
+}
+.envelope__card-ornament { width: 46%; height: auto; opacity: .9; }
+.envelope__card-names {
+  margin: 0; display: flex; gap: .3em; align-items: center;
+  font-family: var(--font-script); font-weight: 700; font-size: clamp(1.4rem, 6.2vw, 2.1rem);
+  color: var(--emerald-800, #0B3D2E); line-height: 1.3;
+}
+.envelope__amp { font-family: var(--font-serif); font-size: .55em; color: var(--gold-600, #A9884C); }
+.envelope__card-date { margin: 0; font-family: var(--font-serif); color: var(--gold-text, #7E6230); letter-spacing: .12em; font-size: .9rem; }
+
+.envelope__pocket { transform: translateZ(2px); pointer-events: none; }
+.pocket { position: absolute; inset: 0; border-radius: 10px; }
+.pocket--start { clip-path: polygon(0 0, 52% 54%, 0 100%); filter: brightness(.97); }
+.pocket--end { clip-path: polygon(100% 0, 48% 54%, 100% 100%); filter: brightness(.95); }
+.pocket--bottom {
+  clip-path: polygon(0 100%, 50% 45%, 100% 100%);
+  background-color: #F3EAD6;
+  box-shadow: inset 0 18px 30px -20px rgba(110, 83, 35, .35);
+}
+.envelope__to {
+  position: absolute; left: 14%; right: 14%; bottom: 8%;
+  margin: 0; text-align: center; color: var(--emerald-800, #0B3D2E);
+  display: flex; justify-content: center; align-items: baseline; gap: .45em; line-height: 1.4;
+  white-space: nowrap; overflow: hidden;
+}
+.envelope__to-label { font-family: var(--font-serif); font-size: .85rem; color: var(--gold-text, #7E6230); }
+.envelope__to-label::after { content: ":"; }
+.envelope__to-name {
+  font-family: var(--font-script); font-weight: 700; font-size: clamp(1rem, 4.2vw, 1.3rem);
+  overflow: hidden; text-overflow: ellipsis;
+}
+
+.envelope__flap {
+  height: 52%; bottom: auto;
+  transform-origin: 50% 0;
+  transform: translateZ(3px) rotateX(0deg);
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(.45, .05, .25, 1);
+  border-radius: 10px 10px 0 0;
+}
+.flap__face { position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% 100%); backface-visibility: hidden; border-radius: 10px 10px 0 0; }
+.flap__face--front { box-shadow: inset 0 -24px 30px -26px rgba(110, 83, 35, .4); filter: brightness(1.02); }
+.flap__face--back {
+  transform: rotateX(180deg);
+  background:
+    radial-gradient(circle at 1px 1px, rgba(234, 220, 185, .5) 1px, transparent 1.6px) 0 0 / 14px 14px,
+    linear-gradient(200deg, #15634B, #062E23);
+}
+
+/* ---------------------------------------------------------------- ختم الشمع */
+.seal {
+  position: absolute; left: 50%; top: 52%;
+  width: clamp(58px, 16vw, 76px); aspect-ratio: 1;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .45));
+  transform: translate(-50%, -50%) translateZ(4px);
+  border: 0; padding: 0; background: none; cursor: pointer;
+  border-radius: 50%;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .35s cubic-bezier(.2, .7, .2, 1);
+}
+.seal:hover { transform: translate(-50%, -50%) translateZ(4px) scale(1.06); }
+.seal:active { transform: translate(-50%, -50%) translateZ(4px) scale(.96); }
+.seal:focus-visible { outline: 3px solid #F2DCA0; outline-offset: 6px; }
+.seal__half {
+  position: absolute; inset: 0; border-radius: 50%;
+  display: grid; place-items: center;
+  background:
+    radial-gradient(circle at 34% 28%, #FFF2C9 0%, #E9CD86 22%, #C9A55A 48%, #9C7A35 78%, #7A5C24 100%);
+  box-shadow:
+    inset 0 0 0 4px rgba(122, 92, 36, .35),
+    inset 0 0 0 7px rgba(255, 242, 201, .25),
+    inset -6px -8px 14px rgba(90, 64, 20, .45);
+  transition: transform .7s cubic-bezier(.3, .6, .3, 1), opacity .7s;
+}
+.seal__half--a { clip-path: polygon(0 0, 54% 0, 44% 38%, 56% 62%, 46% 100%, 0 100%); }
+.seal__half--b { clip-path: polygon(54% 0, 100% 0, 100% 100%, 46% 100%, 56% 62%, 44% 38%); }
+.seal__mono {
+  font-family: var(--font-script); font-weight: 700;
+  font-size: clamp(1.25rem, 5.2vw, 1.6rem); line-height: 1;
+  color: #6E5323;
+  text-shadow: 0 1px 0 rgba(255, 242, 201, .7), 0 -1px 0 rgba(70, 50, 15, .45);
+  white-space: nowrap;
+}
+.seal__ring {
+  position: absolute; inset: -6px; border-radius: 50%;
+  border: 1.5px solid rgba(242, 220, 160, .75);
+  animation: sealPulse 2.2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes sealPulse { from { transform: scale(.92); opacity: .9; } to { transform: scale(1.45); opacity: 0; } }
+
+/* ---------------------------------------------------------------- مراحل الفتح */
+.intro.is-opening .seal__ring,
+.intro.is-opening .intro__hint { opacity: 0; animation: none; transition: opacity .3s; }
+.intro.is-opening .seal { cursor: default; }
+.intro.is-flap-open .intro__kicker { opacity: 0; transition: opacity .5s; animation: none; }
+.intro.is-opening .seal__half--a { transform: translate(-34px, 46px) rotate(-38deg); opacity: 0; }
+.intro.is-opening .seal__half--b { transform: translate(34px, 46px) rotate(38deg); opacity: 0; }
+.intro.is-flap-open .envelope__flap { transform: translateZ(.6px) rotateX(180deg); }
+.intro.is-flap-open .envelope { animation-play-state: paused, paused; }
+.intro.is-card-out .envelope__card {
+  transform: translateZ(1px) translateY(-56%);
+  box-shadow: 0 30px 50px -20px rgba(0, 0, 0, .55);
+}
+.intro.is-leaving { opacity: 0; pointer-events: none; }
+.intro.is-leaving .envelope { transform: translateY(14%) rotateX(0deg) scale(1.25); opacity: 0; }
+.intro.is-leaving .intro__glow { transform: scale(2.4); opacity: 1; transition: transform .9s, opacity .9s; }
+.intro.is-fast, .intro.is-fast .envelope { transition-duration: .35s; }
+
+/* ---------------------------------------------------------------- الواجهة: عمق ثلاثي الأبعاد */
+.hero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+.hero__rays {
+  position: absolute; width: 160vmax; height: 160vmax; left: 50%; top: 42%;
+  translate: -50% -50%; z-index: -2; pointer-events: none; opacity: .5;
+  background: repeating-conic-gradient(from 0deg, rgba(234, 220, 185, .07) 0deg 4deg, transparent 4deg 14deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 58%);
+          mask-image: radial-gradient(circle, #000 0%, transparent 58%);
+  animation: raysSpin 120s linear infinite;
+}
+@keyframes raysSpin { to { rotate: 360deg; } }
+
+.fx-on .hero__frame { transform-style: preserve-3d; }
+.fx-on .hero__frame.reveal.is-visible {
+  transform: perspective(1300px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: opacity .8s var(--ease);
+}
+.fx-on .hero-layer { transform-style: preserve-3d; }
+.fx-on .hero-layer--1 { transform: translateZ(18px); }
+.fx-on .hero-layer--2 { transform: translateZ(36px); }
+.fx-on .hero-layer--3 { transform: translateZ(64px); }
+.fx-on .ornament--flip.hero-layer--1 { transform: translateZ(18px) scaleY(-1); }
+
+.hero__guest {
+  margin: 0 0 6px; font-family: var(--font-serif); font-weight: 700;
+  color: #F2DCA0; font-size: clamp(1.05rem, 3vw, 1.25rem);
+}
+
+/* اللمعان الذهبي على الأسماء */
+.hero__name {
+  background: linear-gradient(105deg, #FFFDF8 0%, #FFFDF8 38%, #F6E6BA 46%, #D9BE84 50%, #F6E6BA 54%, #FFFDF8 62%, #FFFDF8 100%);
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 7s 1.2s ease-in-out infinite;
+  padding-inline: .06em;
+}
+@keyframes shimmer { 0% { background-position: 100% 0; } 55%, 100% { background-position: 0% 0; } }
+
+/* دخول الواجهة بعد فتح الظرف */
+html.hero-enter .hero-layer { animation: layerIn 1.3s cubic-bezier(.2, .8, .2, 1) both; }
+html.hero-enter .hero-layer--1 { animation-delay: .05s; }
+html.hero-enter .hero-layer--2 { animation-delay: .25s; }
+html.hero-enter .hero-layer--3 { animation-delay: .45s; animation-duration: 1.6s; }
+@keyframes layerIn { from { opacity: 0; translate: 0 22px; filter: blur(8px); } }
+
+/* ---------------------------------------------------------------- ظهور الأقسام بعمق */
+.fx-on .reveal:not(.is-visible):not(.hero__frame) { transform: perspective(1200px) rotateX(8deg) translateY(26px) scale(.97); }
+
+/* إمالة البطاقات مع لمعة */
+.tilt-card { position: relative; }
+.fx-on .tilt-card.reveal.is-visible {
+  transform: perspective(900px) rotateX(var(--card-rx, 0deg)) rotateY(var(--card-ry, 0deg));
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease), opacity .8s var(--ease);
+  will-change: transform;
+}
+.fx-on .tilt-card::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 0%), rgba(255, 255, 255, .55), transparent 55%);
+  opacity: 0; transition: opacity .35s;
+  mix-blend-mode: soft-light;
+}
+.fx-on .tilt-card:hover::after { opacity: 1; }
+
+/* ---------------------------------------------------------------- العد التنازلي القلّاب */
+.countdown__unit { position: relative; perspective: 420px; overflow: hidden; }
+.countdown__unit::before { /* خط المنتصف في بطاقة القلب */
+  content: ""; position: absolute; left: 8%; right: 8%; top: 42%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(194, 160, 99, .35), transparent);
+  pointer-events: none;
+}
+.countdown__unit::after { /* لمعان علوي */
+  content: ""; position: absolute; inset: 0 0 58% 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .06), transparent);
+}
+.countdown__num { transform-origin: 50% 60%; backface-visibility: hidden; }
+.fx-on .countdown__unit.is-flipping .countdown__num { animation: flipDigit .55s cubic-bezier(.3, .7, .3, 1); }
+@keyframes flipDigit {
+  0% { transform: rotateX(-85deg); opacity: .25; filter: blur(1px); }
+  70% { transform: rotateX(8deg); opacity: 1; filter: none; }
+  100% { transform: rotateX(0); }
+}
+
+/* ---------------------------------------------------------------- تقويم الشهر */
+.month-card {
+  margin: 24px auto 0; max-width: 430px;
+  background: var(--warm-white, #FFFDF8);
+  border: 1px solid var(--gold-100, #F5ECD7);
+  border-radius: var(--radius-lg, 22px);
+  box-shadow: var(--shadow-soft);
+  padding: 22px clamp(14px, 4vw, 26px) 20px;
+  text-align: center;
+}
+.month-card:empty { display: none; }
+.month-card__head { margin-bottom: 12px; }
+.month-card__title { margin: 0; font-family: var(--font-serif); font-weight: 700; font-size: 1.35rem; color: var(--emerald-800); }
+.month-card__sub { margin: 0; color: var(--gold-text); font-size: .95rem; }
+.month-card__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px 2px; }
+.month-card__wd { font-size: .72rem; color: var(--ink-soft); padding-bottom: 6px; border-bottom: 1px solid var(--gold-100); margin-bottom: 4px; }
+.month-card__day {
+  position: relative; display: grid; place-items: center;
+  height: 38px; font-size: .95rem; color: var(--ink); font-variant-numeric: tabular-nums;
+}
+.month-card__day.is-empty { visibility: hidden; }
+.month-card__day.is-event { color: #fff; font-weight: 700; z-index: 1; }
+.month-card__day.is-event::before {
+  content: ""; position: absolute; width: 32px; height: 32px; border-radius: 50%; z-index: -1;
+  background: radial-gradient(circle at 35% 30%, var(--emerald-600), var(--emerald-900));
+  box-shadow: 0 6px 14px -6px rgba(6, 46, 35, .7);
+}
+.month-card__heart { position: absolute; width: 54px; height: 52px; left: 50%; top: 50%; translate: -50% -52%; overflow: visible; pointer-events: none; }
+.month-card__heart path {
+  fill: none; stroke: var(--gold-500); stroke-width: 3.2; stroke-linecap: round;
+  stroke-dasharray: 100; stroke-dashoffset: 0;
+}
+.fx-on .month-card:not(.is-visible) .month-card__heart path { stroke-dashoffset: 100; }
+.fx-on .month-card.is-visible .month-card__heart path { animation: drawHeart 2.2s .5s cubic-bezier(.6, .1, .3, 1) both; }
+@keyframes drawHeart { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+
+/* ---------------------------------------------------------------- زر الموسيقى */
+.music-toggle {
+  position: fixed; z-index: 60;
+  bottom: calc(18px + env(safe-area-inset-bottom)); inset-inline-start: 16px;
+  width: 52px; height: 52px; border-radius: 50%;
+  display: grid; place-items: center;
+  border: 1px solid rgba(194, 160, 99, .7);
+  background: radial-gradient(circle at 35% 30%, #15634B, #04241B);
+  color: #F2DCA0; cursor: pointer;
+  box-shadow: 0 10px 24px -8px rgba(4, 36, 27, .6);
+  transition: transform .25s var(--ease);
+}
+.music-toggle:hover { transform: scale(1.07); }
+.music-toggle__icon { width: 22px; height: 22px; }
+.music-toggle__bars { display: none; gap: 3px; align-items: flex-end; height: 18px; }
+.music-toggle__bars i { width: 3px; height: 100%; background: currentColor; border-radius: 2px; animation: eq 1s ease-in-out infinite; transform-origin: bottom; }
+.music-toggle__bars i:nth-child(2) { animation-delay: .2s; }
+.music-toggle__bars i:nth-child(3) { animation-delay: .4s; }
+.music-toggle__bars i:nth-child(4) { animation-delay: .1s; }
+@keyframes eq { 0%, 100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
+.music-toggle.is-playing .music-toggle__icon { display: none; }
+.music-toggle.is-playing .music-toggle__bars { display: flex; }
+.music-toggle.is-playing::after {
+  content: ""; position: absolute; inset: -5px; border-radius: 50%;
+  border: 1px solid rgba(242, 220, 160, .6); animation: sealPulse 2.4s ease-out infinite;
+}
+
+/* ---------------------------------------------------------------- زر الرد العائم وشريط التقدم */
+.fab-rsvp {
+  position: fixed; z-index: 60;
+  bottom: calc(18px + env(safe-area-inset-bottom)); inset-inline-end: 16px;
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 52px; padding: 10px 20px; border-radius: 999px;
+  background: linear-gradient(160deg, #15634B, #04241B);
+  color: #FFFDF8; text-decoration: none; font-weight: 700;
+  border: 1px solid rgba(194, 160, 99, .75);
+  box-shadow: 0 14px 30px -10px rgba(4, 36, 27, .7);
+  opacity: 0; transform: translateY(24px) scale(.95); pointer-events: none;
+  transition: opacity .4s var(--ease), transform .4s var(--ease);
+}
+.fab-rsvp svg { width: 20px; height: 20px; color: #F2DCA0; }
+.fab-rsvp.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+.fab-rsvp:hover { background: linear-gradient(160deg, #0F4C3A, #021912); }
+
+.scroll-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 70;
+  background: linear-gradient(90deg, #A9884C, #F2DCA0, #A9884C);
+  transform: scaleX(0); transform-origin: right center;
+  pointer-events: none;
+}
+
+.fx-burst { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1100; pointer-events: none; }
+
+/* نجاح الرد: حركة علامة الصح */
+.rsvp-success:not([hidden]) .rsvp-success__icon path { stroke-dasharray: 40; animation: drawCheck .8s .2s cubic-bezier(.6, .1, .3, 1) both; }
+.rsvp-success:not([hidden]) .rsvp-success__icon circle { stroke-dasharray: 140; animation: drawCheck .9s cubic-bezier(.6, .1, .3, 1) both; }
+@keyframes drawCheck { from { stroke-dashoffset: 140; } to { stroke-dashoffset: 0; } }
+
+/* ---------------------------------------------------------------- تقليل الحركة والشاشات الصغيرة */
+@media (prefers-reduced-motion: reduce) {
+  .hero__canvas, .intro__canvas, .hero__rays { display: none; }
+  .envelope { transform: none; animation: none; }
+  .hero__name { animation: none; background-position: 50% 0; }
+  .seal__ring, .intro__glow { animation: none; }
+}
+@media (max-width: 480px) {
+  .fab-rsvp span { font-size: .95rem; }
+  .month-card__day { height: 34px; }
+}
+@media print {
+  .intro, .music-toggle, .fab-rsvp, .scroll-progress, .hero__canvas, .hero__rays { display: none !important; }
+}

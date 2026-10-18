@@ -7,7 +7,7 @@
   <meta name="description" content="دعوة لحضور حفل زفاف يوسف وشذى — الخميس 27 مايو 2027 في مزرعة الفرح.">
   <meta name="theme-color" content="#0B3D2E">
   <meta name="referrer" content="no-referrer">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co http://127.0.0.1:* http://localhost:*; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co http://127.0.0.1:* http://localhost:*; media-src 'self' https: blob:; base-uri 'self'; form-action 'self'; object-src 'none'">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_AR">
   <meta property="og:title" content="دعوة زفاف يوسف وشذى">
@@ -17,32 +17,37 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/experience.css">
+  <script src="js/boot.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#rsvp">انتقل مباشرة إلى تأكيد الحضور</a>
 
   <header class="hero" id="top">
+    <div class="hero__rays" aria-hidden="true"></div>
     <div class="hero__glow" aria-hidden="true"></div>
+    <canvas class="hero__canvas" aria-hidden="true"></canvas>
     <div class="hero__frame reveal">
-      <img class="ornament ornament--hero" src="assets/images/botanical.svg" alt="" width="400" height="80">
-      <p class="hero__verse" data-text="verse_text">
+      <img class="ornament ornament--hero hero-layer hero-layer--1" src="assets/images/botanical.svg" alt="" width="400" height="80">
+      <p class="hero__guest hero-layer hero-layer--2" id="hero-guest" hidden></p>
+      <p class="hero__verse hero-layer hero-layer--1" data-text="verse_text">
         ﴿وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً﴾
       </p>
-      <p class="hero__intro" data-text="intro_line">بكل الحب والفرح</p>
-      <h1 class="hero__names">
+      <p class="hero__intro hero-layer hero-layer--2" data-text="intro_line">بكل الحب والفرح</p>
+      <h1 class="hero__names hero-layer hero-layer--3">
         <span class="hero__name" data-bind="groom_name">يوسف</span>
         <span class="hero__amp" aria-hidden="true">&</span>
         <span class="visually-hidden">و</span>
         <span class="hero__name" data-bind="bride_name">شذى</span>
       </h1>
-      <p class="hero__tagline" data-text="tagline">يتشرفان بدعوتكم لمشاركتهما فرحة حفل زفافهما</p>
-      <p class="hero__date">
+      <p class="hero__tagline hero-layer hero-layer--2" data-text="tagline">يتشرفان بدعوتكم لمشاركتهما فرحة حفل زفافهما</p>
+      <p class="hero__date hero-layer hero-layer--2">
         <span data-bind="weekday">الخميس</span>
         <span class="hero__dot" aria-hidden="true">•</span>
         <span data-bind="date_long">27 مايو 2027</span>
       </p>
-      <img class="ornament ornament--hero ornament--flip" src="assets/images/botanical.svg" alt="" width="400" height="80">
-      <a class="hero__cue" href="#details">
+      <img class="ornament ornament--hero ornament--flip hero-layer hero-layer--1" src="assets/images/botanical.svg" alt="" width="400" height="80">
+      <a class="hero__cue hero-layer hero-layer--1" href="#details">
         <span>تفاصيل الحفل</span>
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
@@ -60,25 +65,26 @@
     <section class="section" id="details" aria-labelledby="details-title">
       <h2 class="section-title reveal" id="details-title" data-text="details_title">موعد الفرح</h2>
       <div class="details-grid">
-        <article class="detail-card reveal">
+        <article class="detail-card reveal" data-tilt>
           <svg class="detail-card__icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           <h3 class="detail-card__label">التاريخ</h3>
           <p class="detail-card__value"><span data-bind="weekday">الخميس</span></p>
           <p class="detail-card__sub" data-bind="date_long">27 مايو 2027</p>
         </article>
-        <article class="detail-card reveal">
+        <article class="detail-card reveal" data-tilt>
           <svg class="detail-card__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           <h3 class="detail-card__label">الوقت</h3>
           <p class="detail-card__value">الساعة <span data-bind="time_ar">4:00 عصرًا</span></p>
           <p class="detail-card__sub"><span data-bind="event_time" dir="ltr">16:00</span> <span data-bind="tz_label">بتوقيت بغداد</span></p>
         </article>
-        <article class="detail-card reveal">
+        <article class="detail-card reveal" data-tilt>
           <svg class="detail-card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0113 0c0 5.4-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
           <h3 class="detail-card__label">المكان</h3>
           <p class="detail-card__value" data-bind="venue_name">مزرعة الفرح</p>
           <p class="detail-card__sub" data-bind="venue_address">العابات على نهر دجلة</p>
         </article>
       </div>
+      <div class="month-card reveal" id="month-card" data-tilt></div>
     </section>
 
     <section class="section countdown reveal" id="countdown" aria-labelledby="countdown-title">
@@ -122,7 +128,7 @@
     </section>
 
     <section class="section" id="children-note" aria-labelledby="children-note-title">
-      <div class="note-card reveal">
+      <div class="note-card reveal" data-tilt>
         <svg class="note-card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0112 7.6a4.3 4.3 0 017.5 2.7c0 5.6-7.5 10.2-7.5 10.2z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
         <h2 class="note-card__title" id="children-note-title" data-text="children_note_title">ملاحظة مهمة لضيوفنا الكرام</h2>
         <div class="note-card__body" id="children-note-body">

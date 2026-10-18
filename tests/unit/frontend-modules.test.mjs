@@ -13,6 +13,7 @@ import { sanitizeCsvCell, toCsv } from '../../js/csv.js';
 import { CHILDREN_NOTE } from '../../js/content.js';
 import { WEDDING_DEFAULTS } from '../../js/config.js';
 import { validateRsvpInput, readInviteToken } from '../../js/rsvp.js';
+import { monthMatrix } from '../../js/experience/month-card.js';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const START = new Date('2027-05-27T13:00:00Z'); // 16:00 بغداد = 13:00 UTC
@@ -183,7 +184,8 @@ test('all local imports and asset references resolve to existing files', () => {
   };
   check('index.html', /(?:src|href)="([^"]+)"/g, 'index.html');
   check('admin/index.html', /(?:src|href)="([^"]+)"/g, 'admin/index.html');
-  for (const js of ['invitation.js', 'rsvp.js', 'rsvp-api.js', 'share.js', 'calendar.js', 'admin-dashboard.js', 'admin-auth.js', 'admin-charts.js', 'supabase-client.js']) {
+  for (const js of ['invitation.js', 'rsvp.js', 'rsvp-api.js', 'share.js', 'calendar.js', 'admin-dashboard.js', 'admin-auth.js', 'admin-charts.js', 'supabase-client.js',
+    'experience/index.js', 'experience/envelope.js', 'experience/particles.js', 'experience/parallax.js', 'experience/music.js', 'experience/month-card.js']) {
     check(`js/${js}`, /from '(\.[^']+)'/g, `js/${js}`);
   }
 });
@@ -208,4 +210,28 @@ test('config defaults hold every editable page text, with the verbatim children 
   assert.equal(WEDDING_DEFAULTS.children_note_body, CHILDREN_NOTE.paragraphs.join('\n'));
   const html = readFileSync(`${root}index.html`, 'utf8');
   for (const m of html.matchAll(/data-text="([a-z_]+)"/g)) assert.ok(m[1] in WEDDING_DEFAULTS, `index.html binds unknown key ${m[1]}`);
+});
+
+test('month card: Saturday-first grid puts 27 May 2027 under Thursday', () => {
+  const m = monthMatrix('2027-05-27');
+  assert.equal(m.title, 'مايو 2027');
+  assert.equal(m.cells.length % 7, 0);
+  assert.equal(m.cells.indexOf(1), 0, '1 May 2027 is a Saturday → first column');
+  assert.equal(m.cells.indexOf(27) % 7, 5, 'Thursday column (Sat=0 … Thu=5)');
+  assert.equal(m.cells.filter((c) => c !== null).length, 31);
+  const feb = monthMatrix('2028-02-10'); // سنة كبيسة
+  assert.equal(feb.cells.filter((c) => c !== null).length, 29);
+  assert.equal(monthMatrix('bad'), null);
+});
+
+test('experience settings have safe defaults (intro, effects, music on; no custom music)', () => {
+  assert.equal(WEDDING_DEFAULTS.intro_enabled, true);
+  assert.equal(WEDDING_DEFAULTS.effects_enabled, true);
+  assert.equal(WEDDING_DEFAULTS.music_enabled, true);
+  assert.equal(WEDDING_DEFAULTS.music_url, null);
+  const boot = readFileSync(`${root}js/boot.js`, 'utf8');
+  assert.ok(boot.includes('intro-pending') && boot.includes('setTimeout'), 'boot has a safety timeout so the page never stays covered');
+  const html = readFileSync(`${root}index.html`, 'utf8');
+  assert.ok(html.indexOf('js/boot.js') < html.indexOf('</head>'), 'boot script loads in <head>');
+  assert.ok(/media-src[^;]*https:/.test(html), 'CSP allows custom https music');
 });

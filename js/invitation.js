@@ -6,8 +6,18 @@ import {
 import { buildIcs, googleCalendarUrl, downloadTextFile } from './calendar.js';
 import { buildMapsUrl, buildInvitationText, buildWhatsAppUrl, publicSiteUrl, copyText, splitParagraphs } from './share.js';
 import { createRsvpController } from './rsvp.js';
+import { createExperience } from './experience/index.js';
 
 document.documentElement.classList.add('js');
+
+// طبقة التجربة (الظرف ثلاثي الأبعاد، المؤثرات، الموسيقى): أي خطأ فيها لا يوقف الدعوة.
+let experience = null;
+try {
+  experience = createExperience();
+} catch (err) {
+  document.documentElement.classList.remove('intro-pending');
+  console.error('experience layer failed', err);
+}
 
 const ui = getUiConfig();
 const state = {
@@ -107,6 +117,13 @@ function applySettings(settings) {
   document.getElementById('google-calendar-link').href = googleCalendarUrl(ev);
   document.getElementById('calendar-hint').hidden = !s.show_calendar_button || ev.durationKnown;
 
+  try {
+    experience && experience.applySettings(s, {
+      weekdayLabel: formatWeekdayAr(state.start, s.timezone),
+      timeLabel: `${formatTimeAr(s.event_time)}`,
+    });
+  } catch (err) { console.error('experience settings failed', err); }
+
   tick();
 }
 
@@ -120,14 +137,24 @@ const countdownEls = {
 let lastSrMinute = null;
 let timer = null;
 
+/** تحديث رقم مع حركة "قلب البطاقة" ثلاثية الأبعاد عند تغيّره. */
+function setUnit(el, value) {
+  if (el.textContent === value) return;
+  el.textContent = value;
+  const unit = el.parentElement;
+  unit.classList.remove('is-flipping');
+  void unit.offsetWidth; // إعادة تشغيل الحركة
+  unit.classList.add('is-flipping');
+}
+
 function tick() {
   if (!state.start) return;
   // يُحسب الفرق من الوقت الحالي في كل تحديث (لا عدّاد يدوي).
   const p = countdownParts(state.start.getTime(), Date.now());
-  countdownEls.days.textContent = String(p.days);
-  countdownEls.hours.textContent = String(p.hours).padStart(2, '0');
-  countdownEls.minutes.textContent = String(p.minutes).padStart(2, '0');
-  countdownEls.seconds.textContent = String(p.seconds).padStart(2, '0');
+  setUnit(countdownEls.days, String(p.days));
+  setUnit(countdownEls.hours, String(p.hours).padStart(2, '0'));
+  setUnit(countdownEls.minutes, String(p.minutes).padStart(2, '0'));
+  setUnit(countdownEls.seconds, String(p.seconds).padStart(2, '0'));
   document.getElementById('countdown-done').hidden = !p.done;
   document.getElementById('countdown-grid').classList.toggle('is-done', p.done);
 
@@ -196,11 +223,20 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden) sche
 const rsvp = createRsvpController();
 rsvp.loadContext().then((ctx) => {
   if (ctx && ctx.settings) applySettings(ctx.settings);
+  // دعوة شخصية: اسم الضيف على الظرف وتحية خاصة في الواجهة
+  if (ctx && ctx.invitation && ctx.invitation.status === 'valid') {
+    try { experience && experience.setGuest(ctx.invitation.guest_label); } catch { /* ignore */ }
+  }
 });
 
-// عند فتح رابط دعوة شخصية: الانتقال مباشرة لنموذج الرد.
+// عند فتح رابط دعوة شخصية: الانتقال لنموذج الرد (بعد فتح الظرف إن كان ظاهرًا).
 if (rsvp.state.inviteToken && !location.hash.startsWith('#rsvp')) {
-  requestAnimationFrame(() => document.getElementById('rsvp').scrollIntoView({ block: 'start' }));
+  const goToRsvp = () => requestAnimationFrame(() => document.getElementById('rsvp').scrollIntoView({ block: 'start' }));
+  if (document.documentElement.classList.contains('intro-pending')) {
+    document.addEventListener('invitation:opened', () => setTimeout(goToRsvp, 900), { once: true });
+  } else {
+    goToRsvp();
+  }
 }
 
 window.__weddingInvitation = { state }; // للفحص اليدوي في أدوات المطور

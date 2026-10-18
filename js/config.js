@@ -49,6 +49,12 @@ export const WEDDING_DEFAULTS = {
   share_closing_text: 'حضوركم يزيدنا فرحًا وشرفًا، ودمتم بخير ومحبة.',
   whatsapp_number: null, // يُعدَّل من لوحة الإدارة (أو UI.whatsappNumber أدناه)
   site_url: null,        // يُعدَّل من لوحة الإدارة (أو UI.siteUrl أدناه)
+
+  // ---- التجربة التفاعلية (قابلة للتعديل من لوحة الإدارة) ----
+  intro_enabled: true,   // مشهد الظرف ثلاثي الأبعاد عند الفتح
+  effects_enabled: true, // الغبار الذهبي والأوراق المتساقطة والإمالة ثلاثية الأبعاد
+  music_enabled: true,   // موسيقى بعد فتح الظرف (مع زر كتم)
+  music_url: null,       // ملف موسيقى خاص https — فارغ = لحن صندوق موسيقى يُولَّد داخل المتصفح
 };
 
 export const UI = {

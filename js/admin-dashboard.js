@@ -623,8 +623,9 @@ const SETTINGS_TEXT = {
   share_closing_text: { label: 'العبارة الختامية', max: 300 },
   site_url: { label: 'رابط الموقع', max: 300, https: true },
   whatsapp_number: { label: 'رقم واتساب', max: 30 },
+  music_url: { label: 'رابط الموسيقى', max: 500, https: true },
 };
-const SETTINGS_BOOL = ['rsvp_open', 'allow_open_rsvp', 'show_calendar_button', 'show_children_note'];
+const SETTINGS_BOOL = ['rsvp_open', 'allow_open_rsvp', 'show_calendar_button', 'show_children_note', 'intro_enabled', 'effects_enabled', 'music_enabled'];
 
 let settingsDirty = false;
 $('settings-form').addEventListener('input', () => { settingsDirty = true; });

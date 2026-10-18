@@ -308,6 +308,7 @@ export function createRsvpController() {
     banner.hidden = true;
     success.hidden = false;
     success.focus();
+    document.dispatchEvent(new CustomEvent('rsvp:success', { detail: { attendance: r.attendance, mode: data.mode } }));
   }
 
   async function onSubmit(event) {
