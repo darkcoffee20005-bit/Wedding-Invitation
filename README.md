@@ -215,6 +215,10 @@ node scripts/serve.mjs
 
 ### 2. تنفيذ ملفات SQL (بالترتيب)
 
+**الطريقة الأسرع — ملف واحد:** افتح **SQL Editor → New query**، والصق محتوى الملف
+[`supabase/setup_all.sql`](supabase/setup_all.sql) كاملًا ثم **Run**. هو الملفات التسعة مدموجة بالترتيب،
+وفي آخره استعلام تحقق يجب أن يُظهر `tables_found = 6`.
+
 **الطريقة أ — من لوحة Supabase (الأسهل):**
 افتح **SQL Editor → New query**، والصق محتوى كل ملف ثم **Run**، بهذا الترتيب تمامًا:
 
