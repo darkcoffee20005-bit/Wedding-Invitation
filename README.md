@@ -258,6 +258,13 @@ where relnamespace = 'public'::regnamespace and relkind = 'r';
 ```
 
 ### 4. نشر الـ Edge Function
+
+**الطريقة الأسهل (بدون تثبيت أي برنامج):** في Supabase افتح **Edge Functions → Deploy a new function → Via Editor**،
+سمِّ الدالة `rsvp` بالضبط، احذف الكود المبدئي، والصق محتوى الملف
+[`supabase/functions/rsvp/standalone.ts`](supabase/functions/rsvp/standalone.ts) كاملًا ثم **Deploy**.
+(هو نفس الدالة في ملف واحد؛ يُعاد توليده بالأمر `bash scripts/build-standalone-function.sh`.)
+
+**أو عبر Supabase CLI:**
 ```bash
 supabase functions deploy rsvp --no-verify-jwt
 ```

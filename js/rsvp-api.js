@@ -22,7 +22,11 @@ async function call(payload) {
   let res;
   try {
     const headers = { 'Content-Type': 'application/json' };
-    if (anonKey) headers.apikey = anonKey; // مفتاح عام فقط
+    if (anonKey) {
+      headers.apikey = anonKey; // مفتاح عام فقط
+      // المفتاح العام بصيغة JWT يمرّ من بوابة Supabase حتى لو بقي خيار "Verify JWT" مفعّلًا في الدالة
+      if (anonKey.split('.').length === 3) headers.Authorization = `Bearer ${anonKey}`;
+    }
     res = await fetch(rsvpFunctionUrl, {
       method: 'POST',
       headers,
