@@ -9,11 +9,11 @@ import { CHILDREN_NOTE } from './content.js';
 
 export const SUPABASE = {
   // مثال: 'https://abcdefghijklmnop.supabase.co'
-  url: 'https://darkcoffee20005-bit.github.io/Wedding-Invitation/admin/',
+  url: '',
   // المفتاح العام (anon / publishable) من Project Settings → API. آمن للنشر.
-  anonKey: 'yousif',
+  anonKey: '',
   // اتركه فارغًا ليُستخدم `${url}/functions/v1/rsvp` تلقائيًا.
-  rsvpFunctionUrl: '9090max9090',
+  rsvpFunctionUrl: '',
 };
 
 export const WEDDING_DEFAULTS = {
