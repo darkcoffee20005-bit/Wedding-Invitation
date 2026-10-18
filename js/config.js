@@ -13,7 +13,7 @@ export const SUPABASE = {
   // المفتاح العام (anon / publishable) من Project Settings → API. آمن للنشر.
   anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1bGZ0ZGJ1b2Zva2dvZGRydGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNDEyNzMsImV4cCI6MjEwNzkxNzI3M30.BbM7JakQ2tGGmPAfyojUCCC6dRO4xNAl15Ic-FOiJv0',
   // اتركه فارغًا ليُستخدم `${url}/functions/v1/rsvp` تلقائيًا.
-  rsvpFunctionUrl: '',
+  rsvpFunctionUrl: 'https://aulftdbuofokgoddrtde.supabase.co/functions/v1/quick-task',
 };
 
 export const WEDDING_DEFAULTS = {
