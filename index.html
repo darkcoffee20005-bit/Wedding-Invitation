@@ -82,7 +82,7 @@
           <svg class="detail-card__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0113 0c0 5.4-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
           <h3 class="detail-card__label">المكان</h3>
           <p class="detail-card__value" data-bind="venue_name">مزرعة الفرح</p>
-          <p class="detail-card__sub" data-bind="venue_address">العابات على نهر دجلة</p>
+          <p class="detail-card__sub" data-bind="venue_address">الغابات على نهر دجلة</p>
         </article>
       </div>
       <div class="month-card reveal" id="month-card" data-tilt></div>
@@ -104,7 +104,7 @@
     <section class="section" aria-labelledby="actions-title">
       <h2 class="section-title reveal" id="actions-title" data-text="actions_title">شاركونا الفرحة</h2>
       <div class="actions reveal">
-        <a class="btn btn--outline" id="maps-link" href="https://www.google.com/maps/search/?api=1&amp;query=%D9%85%D8%B2%D8%B1%D8%B9%D8%A9%20%D8%A7%D9%84%D9%81%D8%B1%D8%AD%D8%8C%20%D8%A7%D9%84%D8%B9%D8%A7%D8%A8%D8%A7%D8%AA%20%D8%B9%D9%84%D9%89%20%D9%86%D9%87%D8%B1%20%D8%AF%D8%AC%D9%84%D8%A9" target="_blank" rel="noopener noreferrer">
+        <a class="btn btn--outline" id="maps-link" href="https://www.google.com/maps/search/?api=1&amp;query=%D9%85%D8%B2%D8%B1%D8%B9%D8%A9%20%D8%A7%D9%84%D9%81%D8%B1%D8%AD%D8%8C%20%D8%A7%D9%84%D8%BA%D8%A7%D8%A8%D8%A7%D8%AA%20%D8%B9%D9%84%D9%89%20%D9%86%D9%87%D8%B1%20%D8%AF%D8%AC%D9%84%D8%A9" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0113 0c0 5.4-6.5 11-6.5 11z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
           <span>فتح الموقع في خرائط Google</span>
         </a>
@@ -175,13 +175,13 @@
             <div class="stepper">
               <button type="button" class="stepper__btn" data-step="1" aria-label="زيادة العدد">+</button>
               <input class="input stepper__input" id="guest-count" name="guest_count" type="number" inputmode="numeric"
-                     min="1" max="5" step="1" value="1" dir="ltr" aria-describedby="guest-count-help guest-count-error">
+                     min="1" max="15" step="1" value="1" dir="ltr" aria-describedby="guest-count-help guest-count-error">
               <button type="button" class="stepper__btn" data-step="-1" aria-label="إنقاص العدد">−</button>
             </div>
             <p class="field__help" id="guest-count-help">
               يشمل العدد جميع الأشخاص البالغين المشمولين بهذا الرد، بمن فيهم أنت.
               الدعوة مخصصة للكبار فقط، لذا لا يُحتسب الأطفال.
-              الحد الأقصى لهذا الرد: <strong data-bind="max_guests">5</strong>.
+              الحد الأقصى لهذا الرد: <strong data-bind="max_guests">15</strong>.
             </p>
             <p class="field__error" id="guest-count-error" hidden></p>
           </div>

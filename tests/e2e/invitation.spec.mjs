@@ -41,7 +41,7 @@ test.describe('صفحة الدعوة', () => {
     await expect(page.locator('.detail-card').nth(1)).toContainText('4:00 عصرًا');
     await expect(page.locator('.detail-card').nth(1)).toContainText('16:00');
     await expect(page.locator('.detail-card').nth(2)).toContainText('مزرعة الفرح');
-    await expect(page.locator('.detail-card').nth(2)).toContainText('العابات على نهر دجلة');
+    await expect(page.locator('.detail-card').nth(2)).toContainText('الغابات على نهر دجلة');
 
     const note = page.locator('#children-note');
     await expect(note).toBeVisible();
@@ -94,7 +94,7 @@ test.describe('صفحة الدعوة', () => {
     const href = await link.getAttribute('href');
     const url = new URL(href);
     expect(url.hostname).toBe('www.google.com');
-    expect(url.searchParams.get('query')).toBe('مزرعة الفرح، العابات على نهر دجلة');
+    expect(url.searchParams.get('query')).toBe('مزرعة الفرح، الغابات على نهر دجلة');
   });
 
   test('رابط الخرائط الدقيق من الإعدادات يُستخدم عند توفره', async ({ page }) => {
@@ -109,7 +109,7 @@ test.describe('صفحة الدعوة', () => {
     const href = await page.locator('#whatsapp-link').getAttribute('href');
     expect(href.startsWith('https://wa.me/?text=')).toBe(true);
     const text = decodeURIComponent(href.split('text=')[1]);
-    for (const part of ['يوسف', 'شذى', 'الخميس 27 مايو 2027', '4:00 عصرًا', 'مزرعة الفرح', 'العابات على نهر دجلة', 'google.com/maps', NOTE_P1, NOTE_P2]) {
+    for (const part of ['يوسف', 'شذى', 'الخميس 27 مايو 2027', '4:00 عصرًا', 'مزرعة الفرح', 'الغابات على نهر دجلة', 'google.com/maps', NOTE_P1, NOTE_P2]) {
       expect(text).toContain(part);
     }
   });

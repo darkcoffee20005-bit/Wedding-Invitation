@@ -42,6 +42,9 @@ grant execute on function pg_temp.expect_error(text, text, text) to anon, authen
 grant execute on function pg_temp.check(boolean, text) to anon, authenticated, service_role;
 
 -- ---------- 1) قيود الجدول (كمالك القاعدة) ----------
+select pg_temp.check((select max_guests_per_response = 15 and venue_address = 'الغابات على نهر دجلة' from public.wedding_settings), 'seed: max guests 15 and corrected address');
+-- الاختبارات التالية مبنية على حد 5 لسهولة التحقق
+update public.wedding_settings set max_guests_per_response = 5 where id = 1;
 select pg_temp.check((select count(*) = 1 from public.wedding_settings), 'seed: wedding settings row exists');
 select pg_temp.check((select groom_name = 'يوسف' and bride_name = 'شذى' and event_date = '2027-05-27'
                       and event_time = '16:00' and timezone = 'Asia/Baghdad' from public.wedding_settings),

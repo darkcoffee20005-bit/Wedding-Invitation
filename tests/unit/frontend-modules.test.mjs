@@ -55,7 +55,7 @@ test('Arabic date formatting: Thursday 27 May 2027, 4:00 afternoon', () => {
 // ------------------------------------------------------------ التقويم
 test('ICS file is valid RFC 5545 with correct UTC times', () => {
   const ics = buildIcs({
-    title: 'حفل زفاف يوسف وشذى', description: 'سطر أول\nسطر, ثانٍ; ثالث', location: 'مزرعة الفرح، العابات على نهر دجلة',
+    title: 'حفل زفاف يوسف وشذى', description: 'سطر أول\nسطر, ثانٍ; ثالث', location: 'مزرعة الفرح، الغابات على نهر دجلة',
     start: START, durationMinutes: 240, uid: 'wedding-test@invitation', now: new Date('2026-10-01T00:00:00Z'),
   });
   assert.ok(ics.startsWith('BEGIN:VCALENDAR\r\nVERSION:2.0\r\n'));
@@ -85,7 +85,7 @@ test('Google Calendar link uses UTC range', () => {
 test('maps URL: search link from venue + address when no exact link (no invented coordinates)', () => {
   const url = new URL(buildMapsUrl(WEDDING_DEFAULTS));
   assert.equal(url.origin + url.pathname, 'https://www.google.com/maps/search/');
-  assert.equal(url.searchParams.get('query'), 'مزرعة الفرح، العابات على نهر دجلة');
+  assert.equal(url.searchParams.get('query'), 'مزرعة الفرح، الغابات على نهر دجلة');
   assert.ok(!/@-?\d+\.\d+,/.test(url.href), 'no coordinates');
   assert.equal(buildMapsUrl({ ...WEDDING_DEFAULTS, maps_url: 'https://maps.app.goo.gl/abc' }), 'https://maps.app.goo.gl/abc');
   assert.notEqual(buildMapsUrl({ ...WEDDING_DEFAULTS, maps_url: 'javascript:alert(1)' }), 'javascript:alert(1)');
@@ -93,7 +93,7 @@ test('maps URL: search link from venue + address when no exact link (no invented
 
 test('invitation text includes names, date, time, venue, map, children note and closing', () => {
   const text = buildInvitationText(WEDDING_DEFAULTS, START, 'https://example.com/');
-  for (const part of ['يوسف', 'شذى', 'الخميس', '27 مايو 2027', '4:00 عصرًا', 'مزرعة الفرح', 'العابات على نهر دجلة',
+  for (const part of ['يوسف', 'شذى', 'الخميس', '27 مايو 2027', '4:00 عصرًا', 'مزرعة الفرح', 'الغابات على نهر دجلة',
     'https://www.google.com/maps/search/', 'https://example.com/', CHILDREN_NOTE.title, ...CHILDREN_NOTE.paragraphs, 'دمتم بخير']) {
     assert.ok(text.includes(part), `missing: ${part}`);
   }

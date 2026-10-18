@@ -10,7 +10,7 @@ insert into public.wedding_settings (
   max_guests_per_response, show_calendar_button, allow_open_rsvp, rsvp_open, rsvp_deadline
 ) values (
   1, 'يوسف', 'شذى', date '2027-05-27', time '16:00', 'Asia/Baghdad',
-  'مزرعة الفرح', 'العابات على نهر دجلة', null, null,
-  5, true, true, true, null
+  'مزرعة الفرح', 'الغابات على نهر دجلة', null, null,
+  15, true, true, true, null
 )
 on conflict (id) do nothing;
