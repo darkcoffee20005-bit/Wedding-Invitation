@@ -9,9 +9,9 @@ import { CHILDREN_NOTE } from './content.js';
 
 export const SUPABASE = {
   // مثال: 'https://abcdefghijklmnop.supabase.co'
-  url: '',
+  url: 'https://aulftdbuofokgoddrtde.supabase.co',
   // المفتاح العام (anon / publishable) من Project Settings → API. آمن للنشر.
-  anonKey: '',
+  anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1bGZ0ZGJ1b2Zva2dvZGRydGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNDEyNzMsImV4cCI6MjEwNzkxNzI3M30.BbM7JakQ2tGGmPAfyojUCCC6dRO4xNAl15Ic-FOiJv0',
   // اتركه فارغًا ليُستخدم `${url}/functions/v1/rsvp` تلقائيًا.
   rsvpFunctionUrl: '',
 };
