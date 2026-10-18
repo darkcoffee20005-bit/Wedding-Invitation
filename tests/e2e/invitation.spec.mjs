@@ -372,6 +372,11 @@ test.describe('نموذج تأكيد الحضور', () => {
 
   test('بدون إعداد Supabase: لا إرسال وهمي ورسالة واضحة', async ({ browser }) => {
     const page = await browser.newPage({ baseURL: 'http://127.0.0.1:5173' });
+    // محاكاة نسخة بلا ربط (js/config.js الحقيقي أصبح مربوطًا بمشروع Supabase)
+    await page.addInitScript(() => {
+      window.WEDDING_RUNTIME_CONFIG = { supabase: { url: '', anonKey: '', rsvpFunctionUrl: '' } };
+      sessionStorage.setItem('wedding_intro_opened', '1');
+    });
     await page.goto('/');
     await expect(page.locator('#rsvp-banner')).toContainText('لم يُربط بالخادم');
     await expect(page.locator('#rsvp-submit')).toBeDisabled();
