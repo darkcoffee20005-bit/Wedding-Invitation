@@ -86,6 +86,13 @@ select pg_temp.check((select (public.rsvp_public_settings() ->> 'intro_enabled')
                       and public.rsvp_public_settings() ->> 'music_url' = 'https://cdn.example/song.mp3'), 'experience: changes reflected publicly');
 update public.wedding_settings set music_url = null, intro_enabled = true where id = 1;
 
+-- الهوية اللونية (009)
+select pg_temp.check((select theme = 'emerald' from public.wedding_settings) and public.rsvp_public_settings() ->> 'theme' = 'emerald', 'theme: default emerald, exposed publicly');
+select pg_temp.expect_error($q$update public.wedding_settings set theme = 'neon-pink' where id = 1$q$, '23514', 'theme: unknown theme rejected');
+update public.wedding_settings set theme = 'rose-gold' where id = 1;
+select pg_temp.check(public.rsvp_public_settings() ->> 'theme' = 'rose-gold', 'theme: change reflected publicly');
+update public.wedding_settings set theme = default where id = 1;
+
 -- ---------- 2) الزائر المجهول anon: لا شيء ----------
 set role anon;
 select set_config('request.jwt.claims', '{"role":"anon"}', false) \g /dev/null

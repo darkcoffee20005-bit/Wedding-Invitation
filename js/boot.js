@@ -3,6 +3,12 @@
 (function () {
   var root = document.documentElement;
   root.classList.add('js');
+  // الهوية اللونية: معاينة من الرابط (?theme=) أو آخر هوية محفوظة — قبل الرسم لتجنب وميض الألوان
+  var THEMES = ['emerald', 'navy', 'rose-gold', 'burgundy', 'noir', 'olive', 'royal'];
+  try {
+    var t = new URLSearchParams(location.search).get('theme') || localStorage.getItem('wedding_theme');
+    if (t && t !== 'emerald' && THEMES.indexOf(t) !== -1) root.setAttribute('data-theme', t);
+  } catch (e) { /* ignore */ }
   var skip = false;
   try {
     var params = new URLSearchParams(location.search);

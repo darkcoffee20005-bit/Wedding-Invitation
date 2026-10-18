@@ -4,11 +4,23 @@
 // - انفجار احتفالي من أوراق ذهبية عند فتح الظرف وتأكيد الحضور.
 import { parallaxValue } from './parallax.js';
 
+// ألوان الجسيمات تُقرأ من متغيرات الهوية الحالية (css/themes.css) وتتحدث عند تغيير الهوية.
 const PALETTE = {
   gold: ['#E8D9B5', '#D9BE84', '#C2A063', '#F5ECD7'],
   ivory: ['#FFFDF8', '#FBF7EE', '#F5ECD7'],
   emerald: ['#2E8A68', '#3FA07B'],
+  spark: '#FFF4D6',
 };
+
+export function refreshPalette() {
+  const cs = getComputedStyle(document.documentElement);
+  const v = (name, fallback) => (cs.getPropertyValue(name) || '').trim() || fallback;
+  PALETTE.gold = [v('--gold-200', PALETTE.gold[0]), v('--accent-sheen', PALETTE.gold[1]), v('--gold-500', PALETTE.gold[2]), v('--gold-100', PALETTE.gold[3])];
+  PALETTE.ivory = [v('--fx-petal-1', PALETTE.ivory[0]), v('--fx-petal-2', PALETTE.ivory[1]), v('--fx-petal-3', PALETTE.ivory[2])];
+  PALETTE.emerald = [v('--fx-leaf-1', PALETTE.emerald[0]), v('--fx-leaf-2', PALETTE.emerald[1])];
+  PALETTE.spark = v('--accent-shine', PALETTE.spark);
+  spriteCache.clear();
+}
 
 const TAU = Math.PI * 2;
 const rand = (a, b) => a + Math.random() * (b - a);
@@ -173,6 +185,13 @@ export function createAmbientField(canvas, opts = {}) {
     : null;
 
   return {
+    recolor() {
+      particles.forEach((p) => {
+        if (p.kind === 'dust') p.color = pick(PALETTE.gold);
+        else if (p.kind === 'petal') p.color = pick(PALETTE.ivory);
+        else p.color = Math.random() < 0.8 ? pick(PALETTE.gold) : pick(PALETTE.emerald);
+      });
+    },
     start() {
       if (running) return;
       size = resize();
@@ -237,7 +256,7 @@ export function celebrate(x = window.innerWidth / 2, y = window.innerHeight / 2,
       ctx.translate(p.x, p.y);
       if (p.kind === 'spark') {
         const R = p.s * 4;
-        ctx.drawImage(glowSprite('#FFF4D6'), -R, -R, R * 2, R * 2);
+        ctx.drawImage(glowSprite(PALETTE.spark), -R, -R, R * 2, R * 2);
       } else {
         ctx.rotate(p.rot); ctx.scale(1, Math.cos(p.flip));
         ctx.fillStyle = p.color;

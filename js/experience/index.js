@@ -1,7 +1,7 @@
 // طبقة التجربة: تجمع الظرف ثلاثي الأبعاد، المؤثرات الحية، الإمالة، الموسيقى، وتقويم الشهر.
 // منفصلة عن منطق الدعوة والردود؛ إن فشلت لأي سبب تبقى الدعوة تعمل كاملة.
 import { startParallax, onParallax, requestGyroPermission, attachCardTilt } from './parallax.js';
-import { createAmbientField, celebrate } from './particles.js';
+import { createAmbientField, celebrate, refreshPalette } from './particles.js';
 import { createEnvelope } from './envelope.js';
 import { createMusicControl } from './music.js';
 import { renderMonthCard } from './month-card.js';
@@ -15,6 +15,7 @@ export function createExperience() {
   let stopHeroTilt = null;
   let entered = false;
 
+  refreshPalette(); // ألوان الجسيمات من الهوية التي طبّقها boot.js
   startParallax();
   const music = createMusicControl();
 
@@ -124,6 +125,8 @@ export function createExperience() {
       try { localStorage.setItem('wedding_intro_enabled', settings.intro_enabled === false ? '0' : '1'); } catch { /* ignore */ }
       if (settings.intro_enabled === false && envelope && !envelope.isOpen) envelope.dismiss();
 
+      refreshPalette();
+      heroField && heroField.recolor();
       effectsOn = settings.effects_enabled !== false;
       root.classList.toggle('fx-on', effectsOn && !reduceMotion);
       if (effectsOn) startEffects(); else stopEffects();

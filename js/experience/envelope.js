@@ -39,7 +39,7 @@ export function createEnvelope({ reduceMotion, effects, onOpenStart, onDone }) {
   const liner = el('div', 'envelope__liner', { 'aria-hidden': 'true' });
 
   const card = el('div', 'envelope__card', { 'aria-hidden': 'true' });
-  const cardOrn = el('img', 'envelope__card-ornament', { src: 'assets/images/botanical.svg', alt: '', width: '400', height: '80' });
+  const cardOrn = el('span', 'ornament envelope__card-ornament', { 'aria-hidden': 'true' });
   const cardNames = el('p', 'envelope__card-names');
   const groomEl = el('span'); const ampEl = el('span', 'envelope__amp'); const brideEl = el('span');
   ampEl.textContent = '&';

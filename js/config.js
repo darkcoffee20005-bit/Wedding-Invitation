@@ -55,6 +55,9 @@ export const WEDDING_DEFAULTS = {
   effects_enabled: true, // الغبار الذهبي والأوراق المتساقطة والإمالة ثلاثية الأبعاد
   music_enabled: true,   // موسيقى بعد فتح الظرف (مع زر كتم)
   music_url: null,       // ملف موسيقى خاص https — فارغ = لحن صندوق موسيقى يُولَّد داخل المتصفح
+
+  // ---- الهوية اللونية (تُختار من لوحة الإدارة): emerald | navy | rose-gold | burgundy | noir | olive | royal ----
+  theme: 'emerald',
 };
 
 export const UI = {

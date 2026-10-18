@@ -17,6 +17,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/themes.css">
   <link rel="stylesheet" href="css/experience.css">
   <script src="js/boot.js"></script>
 </head>
@@ -28,7 +29,7 @@
     <div class="hero__glow" aria-hidden="true"></div>
     <canvas class="hero__canvas" aria-hidden="true"></canvas>
     <div class="hero__frame reveal">
-      <img class="ornament ornament--hero hero-layer hero-layer--1" src="assets/images/botanical.svg" alt="" width="400" height="80">
+      <span class="ornament ornament--hero hero-layer hero-layer--1" aria-hidden="true"></span>
       <p class="hero__guest hero-layer hero-layer--2" id="hero-guest" hidden></p>
       <p class="hero__verse hero-layer hero-layer--1" data-text="verse_text">
         ﴿وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً﴾
@@ -46,7 +47,7 @@
         <span class="hero__dot" aria-hidden="true">•</span>
         <span data-bind="date_long">27 مايو 2027</span>
       </p>
-      <img class="ornament ornament--hero ornament--flip hero-layer hero-layer--1" src="assets/images/botanical.svg" alt="" width="400" height="80">
+      <span class="ornament ornament--hero ornament--flip hero-layer hero-layer--1" aria-hidden="true"></span>
       <a class="hero__cue hero-layer hero-layer--1" href="#details">
         <span>تفاصيل الحفل</span>
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -140,7 +141,7 @@
 
     <section class="section rsvp" id="rsvp" aria-labelledby="rsvp-title" tabindex="-1">
       <div class="rsvp__card reveal">
-        <img class="ornament ornament--small" src="assets/images/botanical.svg" alt="" width="400" height="80">
+        <span class="ornament ornament--small" aria-hidden="true"></span>
         <h2 class="section-title" id="rsvp-title" data-text="rsvp_title">هل ستشاركوننا فرحتنا؟</h2>
         <p class="rsvp__lead" data-text="rsvp_lead">يسعدنا تأكيد حضوركم لنستعد لاستقبالكم بأجمل صورة.</p>
 
@@ -218,7 +219,7 @@
   </main>
 
   <footer class="footer">
-    <img class="ornament ornament--small" src="assets/images/botanical.svg" alt="" width="400" height="80">
+    <span class="ornament ornament--small" aria-hidden="true"></span>
     <p class="footer__names"><span data-bind="groom_name">يوسف</span> <span class="footer__amp">&</span> <span data-bind="bride_name">شذى</span></p>
     <p class="footer__date" data-bind="date_long">27 مايو 2027</p>
     <p class="footer__thanks" data-text="footer_text">بانتظاركم لنصنع معًا أجمل الذكريات</p>

@@ -7,6 +7,7 @@ import { buildIcs, googleCalendarUrl, downloadTextFile } from './calendar.js';
 import { buildMapsUrl, buildInvitationText, buildWhatsAppUrl, publicSiteUrl, copyText, splitParagraphs } from './share.js';
 import { createRsvpController } from './rsvp.js';
 import { createExperience } from './experience/index.js';
+import { applyTheme, previewTheme, rememberTheme } from './theme.js';
 
 document.documentElement.classList.add('js');
 
@@ -94,6 +95,11 @@ function calendarEvent() {
 function applySettings(settings) {
   state.settings = { ...state.settings, ...settings };
   const s = state.settings;
+  // الهوية اللونية من لوحة الإدارة (أو معاينة مؤقتة من الرابط ?theme=)
+  // (الاستدعاء الأول بالقيم الافتراضية لا يغيّر الهوية التي طبّقها boot.js من الذاكرة)
+  const preview = previewTheme();
+  if (preview) applyTheme(preview);
+  else if (settings.theme) { applyTheme(settings.theme); rememberTheme(settings.theme); }
   state.start = zonedDateTimeToUtc(s.event_date, s.event_time, s.timezone);
 
   bindText('groom_name', s.groom_name);

@@ -1,0 +1,116 @@
+/* =============================================================================
+   هويات الألوان. كل لون في الصفحة والظرف والختم والمؤثرات يأتي من هذه المتغيرات.
+   الأسماء (--emerald-* و --gold-*) تاريخية وتعني الآن: اللون الأساسي ولون الإبراز.
+   تُختار الهوية من لوحة الإدارة (wedding_settings.theme) وتُطبَّق عبر <html data-theme="...">.
+   ============================================================================= */
+
+/* ---------------------------------------------------------------- زمردي (الافتراضي) */
+:root {
+  --emerald-950: #04241B; --emerald-900: #062E23; --emerald-800: #0B3D2E; --emerald-700: #0F4C3A;
+  --emerald-600: #15634B; --emerald-100: #E4EFE8; --emerald-50: #F1F7F3;
+  --primary-darkest: #021912;
+  --deep-rgb: 4, 36, 27; --shadow-rgb: 6, 46, 35; --mid-rgb: 21, 99, 75;
+
+  --gold-500: #C2A063; --gold-600: #A9884C; --gold-text: #7E6230; --gold-200: #EADCB9; --gold-100: #F5ECD7;
+  --accent-glow: #F2DCA0; --accent-shine: #F6E6BA; --accent-sheen: #D9BE84;
+  --accent-rgb: 194, 160, 99; --accent-dark-rgb: 169, 136, 76; --accent-light-rgb: 234, 220, 185; --accent-glow-rgb: 242, 220, 160;
+
+  --ivory: #FBF7EE; --warm-white: #FFFDF8; --on-dark-rgb: 251, 247, 238;
+  --ink: #1C2722; --ink-soft: #4A5A52; --line-strong: #D9D2C1;
+
+  --paper: #F7F0E1; --paper-2: #F3EAD6; --card-paper: #FBF4E4; --paper-ink-rgb: 110, 83, 35;
+  --seal-1: #FFF2C9; --seal-2: #E9CD86; --seal-3: #C9A55A; --seal-4: #9C7A35; --seal-5: #7A5C24; --seal-ink: #6E5323;
+  --seal-1-rgb: 255, 242, 201; --seal-edge-rgb: 122, 92, 36; --seal-shadow-rgb: 90, 64, 20;
+
+  /* ألوان الجسيمات (تقرؤها js/experience/particles.js) */
+  --fx-petal-1: #FFFDF8; --fx-petal-2: #FBF7EE; --fx-petal-3: #F5ECD7;
+  --fx-leaf-1: #2E8A68; --fx-leaf-2: #3FA07B;
+}
+
+/* ---------------------------------------------------------------- كحلي ليلي */
+html[data-theme="navy"] {
+  --emerald-950: #050E1F; --emerald-900: #0A1A33; --emerald-800: #10264A; --emerald-700: #17335F;
+  --emerald-600: #224579; --emerald-100: #E3E8F1; --emerald-50: #F1F4F9;
+  --primary-darkest: #030A16;
+  --deep-rgb: 5, 14, 31; --shadow-rgb: 10, 26, 51; --mid-rgb: 34, 69, 121;
+  --ivory: #FAF8F3; --warm-white: #FFFEFB; --on-dark-rgb: 250, 248, 243;
+  --ink: #18202E; --ink-soft: #4B5566; --line-strong: #D5D2C8;
+  --paper: #F6F2EA; --paper-2: #EFE9DD; --card-paper: #FBF8F1;
+  --fx-leaf-1: #5C7FB8; --fx-leaf-2: #7C9BCB;
+}
+
+/* ---------------------------------------------------------------- وردي ذهبي */
+html[data-theme="rose-gold"] {
+  --emerald-950: #2A0F18; --emerald-900: #3A1622; --emerald-800: #4E1F2E; --emerald-700: #66293C;
+  --emerald-600: #83384F; --emerald-100: #F4E4E8; --emerald-50: #FAF1F3;
+  --primary-darkest: #1C0910;
+  --deep-rgb: 42, 15, 24; --shadow-rgb: 58, 22, 34; --mid-rgb: 131, 56, 79;
+  --gold-500: #D4A08A; --gold-600: #B97F69; --gold-text: #8A5040; --gold-200: #F0D5C8; --gold-100: #F8E9E2;
+  --accent-glow: #F6CDBB; --accent-shine: #F9DED2; --accent-sheen: #E2B29D;
+  --accent-rgb: 212, 160, 138; --accent-dark-rgb: 185, 127, 105; --accent-light-rgb: 240, 213, 200; --accent-glow-rgb: 246, 205, 187;
+  --ivory: #FCF6F3; --warm-white: #FFFBF9; --on-dark-rgb: 252, 246, 243;
+  --ink: #2A1A1F; --ink-soft: #6A5056; --line-strong: #E0CFCB;
+  --paper: #FBF1EC; --paper-2: #F6E6DF; --card-paper: #FFF6F2; --paper-ink-rgb: 125, 69, 53;
+  --seal-1: #FFE6DA; --seal-2: #E9B9A3; --seal-3: #CC8F78; --seal-4: #A3654F; --seal-5: #7D4535; --seal-ink: #6A3527;
+  --seal-1-rgb: 255, 230, 218; --seal-edge-rgb: 125, 69, 53; --seal-shadow-rgb: 90, 45, 32;
+  --fx-petal-1: #F7D6DE; --fx-petal-2: #FBE8EC; --fx-petal-3: #FFFFFF;
+  --fx-leaf-1: #E7A9B8; --fx-leaf-2: #D98FA2;
+}
+
+/* ---------------------------------------------------------------- عنابي */
+html[data-theme="burgundy"] {
+  --emerald-950: #22070C; --emerald-900: #320B13; --emerald-800: #46101C; --emerald-700: #5E1626;
+  --emerald-600: #7A2034; --emerald-100: #F3E3E6; --emerald-50: #FAF1F3;
+  --primary-darkest: #160408;
+  --deep-rgb: 34, 7, 12; --shadow-rgb: 50, 11, 19; --mid-rgb: 122, 32, 52;
+  --ivory: #FBF6EF; --warm-white: #FFFDF9; --on-dark-rgb: 251, 246, 239;
+  --ink: #261A1C; --ink-soft: #5E4D50; --line-strong: #DDD0C6;
+  --fx-petal-1: #FFFDF9; --fx-petal-2: #F6DCE0; --fx-petal-3: #F5ECD7;
+  --fx-leaf-1: #B8475E; --fx-leaf-2: #D06A80;
+}
+
+/* ---------------------------------------------------------------- أسود ذهبي */
+html[data-theme="noir"] {
+  --emerald-950: #070707; --emerald-900: #111111; --emerald-800: #1A1A1A; --emerald-700: #262626;
+  --emerald-600: #383838; --emerald-100: #ECEAE5; --emerald-50: #F6F4EF;
+  --primary-darkest: #000000;
+  --deep-rgb: 7, 7, 7; --shadow-rgb: 17, 17, 17; --mid-rgb: 56, 56, 56;
+  --gold-500: #CFAE62; --gold-600: #B08F45; --gold-text: #7A5E22; --gold-200: #EEDDB4; --gold-100: #F7EED9;
+  --accent-glow: #F5DE9C; --accent-shine: #F9E9BC; --accent-sheen: #DEC17F;
+  --accent-rgb: 207, 174, 98; --accent-dark-rgb: 176, 143, 69; --accent-light-rgb: 238, 221, 180; --accent-glow-rgb: 245, 222, 156;
+  --ivory: #F8F5EE; --warm-white: #FFFDF8; --on-dark-rgb: 248, 245, 238;
+  --ink: #161616; --ink-soft: #545250; --line-strong: #D6D1C5;
+  --fx-leaf-1: #E9CF8E; --fx-leaf-2: #B08F45;
+}
+
+/* ---------------------------------------------------------------- زيتوني */
+html[data-theme="olive"] {
+  --emerald-950: #1A2116; --emerald-900: #232C1E; --emerald-800: #2F3B28; --emerald-700: #3D4C34;
+  --emerald-600: #526544; --emerald-100: #E8ECE2; --emerald-50: #F3F5EF;
+  --primary-darkest: #11160E;
+  --deep-rgb: 26, 33, 22; --shadow-rgb: 35, 44, 30; --mid-rgb: 82, 101, 68;
+  --ivory: #F9F7F0; --warm-white: #FFFEF9; --on-dark-rgb: 249, 247, 240;
+  --ink: #1F241B; --ink-soft: #545B4D; --line-strong: #D7D4C6;
+  --fx-leaf-1: #8BA374; --fx-leaf-2: #A7BC92;
+}
+
+/* ---------------------------------------------------------------- بنفسجي ملكي */
+html[data-theme="royal"] {
+  --emerald-950: #120B1F; --emerald-900: #1C1230; --emerald-800: #281A44; --emerald-700: #35235A;
+  --emerald-600: #4A3378; --emerald-100: #ECE6F3; --emerald-50: #F6F2FA;
+  --primary-darkest: #0B0614;
+  --deep-rgb: 18, 11, 31; --shadow-rgb: 28, 18, 48; --mid-rgb: 74, 51, 120;
+  --ivory: #FAF8F4; --warm-white: #FFFEFC; --on-dark-rgb: 250, 248, 244;
+  --ink: #1F1A27; --ink-soft: #57506A; --line-strong: #D9D3DD;
+  --fx-petal-1: #FFFEFC; --fx-petal-2: #E9E0F5; --fx-petal-3: #F5ECD7;
+  --fx-leaf-1: #9B83C9; --fx-leaf-2: #B7A3DB;
+}
+
+/* الزخرفة النباتية: قناع SVG يُلوَّن بلون الإبراز في كل هوية */
+.ornament {
+  display: block;
+  aspect-ratio: 5 / 1;
+  background-color: var(--gold-500);
+  -webkit-mask: url("../assets/images/botanical.svg") center / contain no-repeat;
+          mask: url("../assets/images/botanical.svg") center / contain no-repeat;
+}

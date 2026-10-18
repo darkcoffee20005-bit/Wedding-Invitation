@@ -9,7 +9,7 @@ html.intro-pending, html.intro-pending body { overflow: hidden; }
 body { overflow-x: hidden; overflow-x: clip; }
 html.intro-pending:not(.intro-ready) body::before {
   content: ""; position: fixed; inset: 0; z-index: 999;
-  background: radial-gradient(120% 90% at 50% 30%, #0F4C3A 0%, #062E23 55%, #021912 100%);
+  background: radial-gradient(120% 90% at 50% 30%, var(--emerald-700) 0%, var(--emerald-900) 55%, var(--primary-darkest) 100%);
 }
 html.intro-pending .fab-rsvp,
 html.intro-pending .music-toggle,
@@ -22,21 +22,21 @@ html.intro-pending .scroll-progress { visibility: hidden; }
   padding: 24px 16px;
   perspective: 1600px;
   background:
-    radial-gradient(60% 45% at 50% 42%, rgba(194, 160, 99, .16), transparent 70%),
-    radial-gradient(120% 90% at 50% 30%, #0F4C3A 0%, #062E23 55%, #021912 100%);
-  color: var(--ivory, #FBF7EE);
+    radial-gradient(60% 45% at 50% 42%, rgba(var(--accent-rgb), .16), transparent 70%),
+    radial-gradient(120% 90% at 50% 30%, var(--emerald-700) 0%, var(--emerald-900) 55%, var(--primary-darkest) 100%);
+  color: var(--ivory, var(--ivory));
   overflow: hidden;
   transition: opacity .9s cubic-bezier(.2, .7, .2, 1), background-color .9s;
 }
 .intro::before { /* ملمس مخملي خفيف */
   content: ""; position: absolute; inset: 0; opacity: .08; pointer-events: none;
-  background-image: radial-gradient(circle at 1px 1px, #EADCB9 1px, transparent 1.4px);
+  background-image: radial-gradient(circle at 1px 1px, var(--gold-200) 1px, transparent 1.4px);
   background-size: 22px 22px;
 }
 .intro__canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .intro__glow {
   position: absolute; width: 70vmin; height: 70vmin; border-radius: 50%;
-  background: radial-gradient(circle, rgba(242, 220, 160, .22), transparent 65%);
+  background: radial-gradient(circle, rgba(var(--accent-glow-rgb), .22), transparent 65%);
   filter: blur(10px); pointer-events: none;
   animation: introGlow 6s ease-in-out infinite;
 }
@@ -45,22 +45,22 @@ html.intro-pending .scroll-progress { visibility: hidden; }
 .intro__stage { position: relative; display: grid; justify-items: center; gap: clamp(18px, 4vh, 30px); transform-style: preserve-3d; }
 .intro__kicker {
   margin: 0; font-family: var(--font-serif); font-size: clamp(1rem, 3.4vw, 1.2rem);
-  letter-spacing: .3em; color: var(--gold-200, #EADCB9);
+  letter-spacing: .3em; color: var(--gold-200, var(--gold-200));
   animation: fadeUp 1.2s .2s both;
 }
 .intro__hint {
-  margin: 0; font-size: .95rem; color: rgba(251, 247, 238, .78);
+  margin: 0; font-size: .95rem; color: rgba(var(--on-dark-rgb), .78);
   animation: fadeUp 1.2s .8s both, hintPulse 2.6s 2s ease-in-out infinite;
 }
 @keyframes hintPulse { 50% { opacity: .45; } }
 .intro__skip {
   position: absolute; top: max(16px, env(safe-area-inset-top)); inset-inline-end: 16px;
   min-height: 44px; padding: 8px 16px; border-radius: 999px;
-  border: 1px solid rgba(234, 220, 185, .35); background: rgba(4, 36, 27, .35);
-  color: rgba(251, 247, 238, .85); font: inherit; font-size: .9rem; cursor: pointer;
+  border: 1px solid rgba(var(--accent-light-rgb), .35); background: rgba(var(--deep-rgb), .35);
+  color: rgba(var(--on-dark-rgb), .85); font: inherit; font-size: .9rem; cursor: pointer;
   backdrop-filter: blur(4px);
 }
-.intro__skip:hover { background: rgba(4, 36, 27, .6); color: #fff; }
+.intro__skip:hover { background: rgba(var(--deep-rgb), .6); color: #fff; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } }
 
 /* ---------------------------------------------------------------- الظرف */
@@ -81,10 +81,10 @@ html.intro-pending .scroll-progress { visibility: hidden; }
   position: absolute; inset: 0; border-radius: 10px;
 }
 .paper, .envelope__back, .pocket, .flap__face--front {
-  background-color: #F7F0E1;
+  background-color: var(--paper);
   background-image:
     linear-gradient(135deg, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 45%),
-    radial-gradient(circle at 20% 80%, rgba(194, 160, 99, .08), transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(var(--accent-rgb), .08), transparent 40%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .25 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .envelope__back {
@@ -95,17 +95,17 @@ html.intro-pending .scroll-progress { visibility: hidden; }
   transform: translateZ(.5px);
   clip-path: polygon(0 0, 100% 0, 50% 52%);
   background:
-    radial-gradient(circle at 1px 1px, rgba(234, 220, 185, .55) 1px, transparent 1.6px) 0 0 / 14px 14px,
-    linear-gradient(160deg, #15634B, #062E23);
+    radial-gradient(circle at 1px 1px, rgba(var(--accent-light-rgb), .55) 1px, transparent 1.6px) 0 0 / 14px 14px,
+    linear-gradient(160deg, var(--emerald-600), var(--emerald-900));
 }
 .envelope__card {
   inset: 7% 7% 7% 7%;
   transform: translateZ(1px);
   display: grid; align-content: center; justify-items: center; gap: 4px;
   text-align: center;
-  background: linear-gradient(180deg, #FFFDF8, #FBF4E4);
-  border: 1px solid rgba(194, 160, 99, .7);
-  outline: 1px solid rgba(194, 160, 99, .35); outline-offset: -7px;
+  background: linear-gradient(180deg, var(--warm-white), var(--card-paper));
+  border: 1px solid rgba(var(--accent-rgb), .7);
+  outline: 1px solid rgba(var(--accent-rgb), .35); outline-offset: -7px;
   border-radius: 6px;
   box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .45);
   transition: transform 1.1s cubic-bezier(.2, .8, .2, 1), box-shadow 1.1s;
@@ -114,10 +114,10 @@ html.intro-pending .scroll-progress { visibility: hidden; }
 .envelope__card-names {
   margin: 0; display: flex; gap: .3em; align-items: center;
   font-family: var(--font-script); font-weight: 700; font-size: clamp(1.4rem, 6.2vw, 2.1rem);
-  color: var(--emerald-800, #0B3D2E); line-height: 1.3;
+  color: var(--emerald-800, var(--emerald-800)); line-height: 1.3;
 }
-.envelope__amp { font-family: var(--font-serif); font-size: .55em; color: var(--gold-600, #A9884C); }
-.envelope__card-date { margin: 0; font-family: var(--font-serif); color: var(--gold-text, #7E6230); letter-spacing: .12em; font-size: .9rem; }
+.envelope__amp { font-family: var(--font-serif); font-size: .55em; color: var(--gold-600, var(--gold-600)); }
+.envelope__card-date { margin: 0; font-family: var(--font-serif); color: var(--gold-text, var(--gold-text)); letter-spacing: .12em; font-size: .9rem; }
 
 .envelope__pocket { transform: translateZ(2px); pointer-events: none; }
 .pocket { position: absolute; inset: 0; border-radius: 10px; }
@@ -125,16 +125,16 @@ html.intro-pending .scroll-progress { visibility: hidden; }
 .pocket--end { clip-path: polygon(100% 0, 48% 54%, 100% 100%); filter: brightness(.95); }
 .pocket--bottom {
   clip-path: polygon(0 100%, 50% 45%, 100% 100%);
-  background-color: #F3EAD6;
-  box-shadow: inset 0 18px 30px -20px rgba(110, 83, 35, .35);
+  background-color: var(--paper-2);
+  box-shadow: inset 0 18px 30px -20px rgba(var(--paper-ink-rgb), .35);
 }
 .envelope__to {
   position: absolute; left: 14%; right: 14%; bottom: 8%;
-  margin: 0; text-align: center; color: var(--emerald-800, #0B3D2E);
+  margin: 0; text-align: center; color: var(--emerald-800, var(--emerald-800));
   display: flex; justify-content: center; align-items: baseline; gap: .45em; line-height: 1.4;
   white-space: nowrap; overflow: hidden;
 }
-.envelope__to-label { font-family: var(--font-serif); font-size: .85rem; color: var(--gold-text, #7E6230); }
+.envelope__to-label { font-family: var(--font-serif); font-size: .85rem; color: var(--gold-text, var(--gold-text)); }
 .envelope__to-label::after { content: ":"; }
 .envelope__to-name {
   font-family: var(--font-script); font-weight: 700; font-size: clamp(1rem, 4.2vw, 1.3rem);
@@ -150,12 +150,12 @@ html.intro-pending .scroll-progress { visibility: hidden; }
   border-radius: 10px 10px 0 0;
 }
 .flap__face { position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 50% 100%); backface-visibility: hidden; border-radius: 10px 10px 0 0; }
-.flap__face--front { box-shadow: inset 0 -24px 30px -26px rgba(110, 83, 35, .4); filter: brightness(1.02); }
+.flap__face--front { box-shadow: inset 0 -24px 30px -26px rgba(var(--paper-ink-rgb), .4); filter: brightness(1.02); }
 .flap__face--back {
   transform: rotateX(180deg);
   background:
-    radial-gradient(circle at 1px 1px, rgba(234, 220, 185, .5) 1px, transparent 1.6px) 0 0 / 14px 14px,
-    linear-gradient(200deg, #15634B, #062E23);
+    radial-gradient(circle at 1px 1px, rgba(var(--accent-light-rgb), .5) 1px, transparent 1.6px) 0 0 / 14px 14px,
+    linear-gradient(200deg, var(--emerald-600), var(--emerald-900));
 }
 
 /* ---------------------------------------------------------------- ختم الشمع */
@@ -171,16 +171,16 @@ html.intro-pending .scroll-progress { visibility: hidden; }
 }
 .seal:hover { transform: translate(-50%, -50%) translateZ(4px) scale(1.06); }
 .seal:active { transform: translate(-50%, -50%) translateZ(4px) scale(.96); }
-.seal:focus-visible { outline: 3px solid #F2DCA0; outline-offset: 6px; }
+.seal:focus-visible { outline: 3px solid var(--accent-glow); outline-offset: 6px; }
 .seal__half {
   position: absolute; inset: 0; border-radius: 50%;
   display: grid; place-items: center;
   background:
-    radial-gradient(circle at 34% 28%, #FFF2C9 0%, #E9CD86 22%, #C9A55A 48%, #9C7A35 78%, #7A5C24 100%);
+    radial-gradient(circle at 34% 28%, var(--seal-1) 0%, var(--seal-2) 22%, var(--seal-3) 48%, var(--seal-4) 78%, var(--seal-5) 100%);
   box-shadow:
-    inset 0 0 0 4px rgba(122, 92, 36, .35),
-    inset 0 0 0 7px rgba(255, 242, 201, .25),
-    inset -6px -8px 14px rgba(90, 64, 20, .45);
+    inset 0 0 0 4px rgba(var(--seal-edge-rgb), .35),
+    inset 0 0 0 7px rgba(var(--seal-1-rgb), .25),
+    inset -6px -8px 14px rgba(var(--seal-shadow-rgb), .45);
   transition: transform .7s cubic-bezier(.3, .6, .3, 1), opacity .7s;
 }
 .seal__half--a { clip-path: polygon(0 0, 54% 0, 44% 38%, 56% 62%, 46% 100%, 0 100%); }
@@ -188,13 +188,13 @@ html.intro-pending .scroll-progress { visibility: hidden; }
 .seal__mono {
   font-family: var(--font-script); font-weight: 700;
   font-size: clamp(1.25rem, 5.2vw, 1.6rem); line-height: 1;
-  color: #6E5323;
-  text-shadow: 0 1px 0 rgba(255, 242, 201, .7), 0 -1px 0 rgba(70, 50, 15, .45);
+  color: var(--seal-ink);
+  text-shadow: 0 1px 0 rgba(var(--seal-1-rgb), .7), 0 -1px 0 rgba(var(--seal-shadow-rgb), .45);
   white-space: nowrap;
 }
 .seal__ring {
   position: absolute; inset: -6px; border-radius: 50%;
-  border: 1.5px solid rgba(242, 220, 160, .75);
+  border: 1.5px solid rgba(var(--accent-glow-rgb), .75);
   animation: sealPulse 2.2s ease-out infinite;
   pointer-events: none;
 }
@@ -223,7 +223,7 @@ html.intro-pending .scroll-progress { visibility: hidden; }
 .hero__rays {
   position: absolute; width: 160vmax; height: 160vmax; left: 50%; top: 42%;
   translate: -50% -50%; z-index: -2; pointer-events: none; opacity: .5;
-  background: repeating-conic-gradient(from 0deg, rgba(234, 220, 185, .07) 0deg 4deg, transparent 4deg 14deg);
+  background: repeating-conic-gradient(from 0deg, rgba(var(--accent-light-rgb), .07) 0deg 4deg, transparent 4deg 14deg);
   -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 58%);
           mask-image: radial-gradient(circle, #000 0%, transparent 58%);
   animation: raysSpin 120s linear infinite;
@@ -243,12 +243,12 @@ html.intro-pending .scroll-progress { visibility: hidden; }
 
 .hero__guest {
   margin: 0 0 6px; font-family: var(--font-serif); font-weight: 700;
-  color: #F2DCA0; font-size: clamp(1.05rem, 3vw, 1.25rem);
+  color: var(--accent-glow); font-size: clamp(1.05rem, 3vw, 1.25rem);
 }
 
 /* اللمعان الذهبي على الأسماء */
 .hero__name {
-  background: linear-gradient(105deg, #FFFDF8 0%, #FFFDF8 38%, #F6E6BA 46%, #D9BE84 50%, #F6E6BA 54%, #FFFDF8 62%, #FFFDF8 100%);
+  background: linear-gradient(105deg, var(--warm-white) 0%, var(--warm-white) 38%, var(--accent-shine) 46%, var(--accent-sheen) 50%, var(--accent-shine) 54%, var(--warm-white) 62%, var(--warm-white) 100%);
   background-size: 300% 100%;
   background-position: 100% 0;
   -webkit-background-clip: text; background-clip: text;
@@ -288,7 +288,7 @@ html.hero-enter .hero-layer--3 { animation-delay: .45s; animation-duration: 1.6s
 .countdown__unit { position: relative; perspective: 420px; overflow: hidden; }
 .countdown__unit::before { /* خط المنتصف في بطاقة القلب */
   content: ""; position: absolute; left: 8%; right: 8%; top: 42%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(194, 160, 99, .35), transparent);
+  background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), .35), transparent);
   pointer-events: none;
 }
 .countdown__unit::after { /* لمعان علوي */
@@ -306,8 +306,8 @@ html.hero-enter .hero-layer--3 { animation-delay: .45s; animation-duration: 1.6s
 /* ---------------------------------------------------------------- تقويم الشهر */
 .month-card {
   margin: 24px auto 0; max-width: 430px;
-  background: var(--warm-white, #FFFDF8);
-  border: 1px solid var(--gold-100, #F5ECD7);
+  background: var(--warm-white, var(--warm-white));
+  border: 1px solid var(--gold-100, var(--gold-100));
   border-radius: var(--radius-lg, 22px);
   box-shadow: var(--shadow-soft);
   padding: 22px clamp(14px, 4vw, 26px) 20px;
@@ -328,7 +328,7 @@ html.hero-enter .hero-layer--3 { animation-delay: .45s; animation-duration: 1.6s
 .month-card__day.is-event::before {
   content: ""; position: absolute; width: 32px; height: 32px; border-radius: 50%; z-index: -1;
   background: radial-gradient(circle at 35% 30%, var(--emerald-600), var(--emerald-900));
-  box-shadow: 0 6px 14px -6px rgba(6, 46, 35, .7);
+  box-shadow: 0 6px 14px -6px rgba(var(--shadow-rgb), .7);
 }
 .month-card__heart { position: absolute; width: 54px; height: 52px; left: 50%; top: 50%; translate: -50% -52%; overflow: visible; pointer-events: none; }
 .month-card__heart path {
@@ -345,10 +345,10 @@ html.hero-enter .hero-layer--3 { animation-delay: .45s; animation-duration: 1.6s
   bottom: calc(18px + env(safe-area-inset-bottom)); inset-inline-start: 16px;
   width: 52px; height: 52px; border-radius: 50%;
   display: grid; place-items: center;
-  border: 1px solid rgba(194, 160, 99, .7);
-  background: radial-gradient(circle at 35% 30%, #15634B, #04241B);
-  color: #F2DCA0; cursor: pointer;
-  box-shadow: 0 10px 24px -8px rgba(4, 36, 27, .6);
+  border: 1px solid rgba(var(--accent-rgb), .7);
+  background: radial-gradient(circle at 35% 30%, var(--emerald-600), var(--emerald-950));
+  color: var(--accent-glow); cursor: pointer;
+  box-shadow: 0 10px 24px -8px rgba(var(--deep-rgb), .6);
   transition: transform .25s var(--ease);
 }
 .music-toggle:hover { transform: scale(1.07); }
@@ -363,7 +363,7 @@ html.hero-enter .hero-layer--3 { animation-delay: .45s; animation-duration: 1.6s
 .music-toggle.is-playing .music-toggle__bars { display: flex; }
 .music-toggle.is-playing::after {
   content: ""; position: absolute; inset: -5px; border-radius: 50%;
-  border: 1px solid rgba(242, 220, 160, .6); animation: sealPulse 2.4s ease-out infinite;
+  border: 1px solid rgba(var(--accent-glow-rgb), .6); animation: sealPulse 2.4s ease-out infinite;
 }
 
 /* ---------------------------------------------------------------- زر الرد العائم وشريط التقدم */
@@ -372,20 +372,20 @@ html.hero-enter .hero-layer--3 { animation-delay: .45s; animation-duration: 1.6s
   bottom: calc(18px + env(safe-area-inset-bottom)); inset-inline-end: 16px;
   display: inline-flex; align-items: center; gap: 8px;
   min-height: 52px; padding: 10px 20px; border-radius: 999px;
-  background: linear-gradient(160deg, #15634B, #04241B);
-  color: #FFFDF8; text-decoration: none; font-weight: 700;
-  border: 1px solid rgba(194, 160, 99, .75);
-  box-shadow: 0 14px 30px -10px rgba(4, 36, 27, .7);
+  background: linear-gradient(160deg, var(--emerald-600), var(--emerald-950));
+  color: var(--warm-white); text-decoration: none; font-weight: 700;
+  border: 1px solid rgba(var(--accent-rgb), .75);
+  box-shadow: 0 14px 30px -10px rgba(var(--deep-rgb), .7);
   opacity: 0; transform: translateY(24px) scale(.95); pointer-events: none;
   transition: opacity .4s var(--ease), transform .4s var(--ease);
 }
-.fab-rsvp svg { width: 20px; height: 20px; color: #F2DCA0; }
+.fab-rsvp svg { width: 20px; height: 20px; color: var(--accent-glow); }
 .fab-rsvp.is-visible { opacity: 1; transform: none; pointer-events: auto; }
-.fab-rsvp:hover { background: linear-gradient(160deg, #0F4C3A, #021912); }
+.fab-rsvp:hover { background: linear-gradient(160deg, var(--emerald-700), var(--primary-darkest)); }
 
 .scroll-progress {
   position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 70;
-  background: linear-gradient(90deg, #A9884C, #F2DCA0, #A9884C);
+  background: linear-gradient(90deg, var(--gold-600), var(--accent-glow), var(--gold-600));
   transform: scaleX(0); transform-origin: right center;
   pointer-events: none;
 }
@@ -411,3 +411,6 @@ html.hero-enter .hero-layer--3 { animation-delay: .45s; animation-duration: 1.6s
 @media print {
   .intro, .music-toggle, .fab-rsvp, .scroll-progress, .hero__canvas, .hero__rays { display: none !important; }
 }
+
+/* الأسماء تستقبل التركيز برمجيًا بعد فتح الظرف (لقارئات الشاشة) وليست عنصرًا تفاعليًا */
+.hero__names:focus { outline: none; }

@@ -14,6 +14,7 @@ import { CHILDREN_NOTE } from '../../js/content.js';
 import { WEDDING_DEFAULTS } from '../../js/config.js';
 import { validateRsvpInput, readInviteToken } from '../../js/rsvp.js';
 import { monthMatrix } from '../../js/experience/month-card.js';
+import { THEMES, isTheme, previewTheme } from '../../js/theme.js';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const START = new Date('2027-05-27T13:00:00Z'); // 16:00 بغداد = 13:00 UTC
@@ -234,4 +235,58 @@ test('experience settings have safe defaults (intro, effects, music on; no custo
   const html = readFileSync(`${root}index.html`, 'utf8');
   assert.ok(html.indexOf('js/boot.js') < html.indexOf('</head>'), 'boot script loads in <head>');
   assert.ok(/media-src[^;]*https:/.test(html), 'CSP allows custom https music');
+});
+
+test('themes: same list in js/theme.js, css/themes.css, boot.js and the DB constraint', () => {
+  const ids = THEMES.map((t) => t.id);
+  assert.deepEqual(ids, ['emerald', 'navy', 'rose-gold', 'burgundy', 'noir', 'olive', 'royal']);
+  const css = readFileSync(`${root}css/themes.css`, 'utf8');
+  for (const id of ids.slice(1)) assert.ok(css.includes(`html[data-theme="${id}"]`), `css for ${id}`);
+  const boot = readFileSync(`${root}js/boot.js`, 'utf8');
+  for (const id of ids) assert.ok(boot.includes(`'${id}'`), `boot knows ${id}`);
+  const sql = readFileSync(`${root}supabase/migrations/009_theme.sql`, 'utf8');
+  for (const id of ids) assert.ok(sql.includes(`'${id}'`), `db allows ${id}`);
+  assert.ok(isTheme('navy') && !isTheme('neon') && !isTheme(null));
+  assert.equal(previewTheme({ search: '?theme=royal' }), 'royal');
+  assert.equal(previewTheme({ search: '?theme=evil<script>' }), null);
+});
+
+test('themes: every theme overrides the primary scale; no hard-coded brand colors left in page CSS', () => {
+  const css = readFileSync(`${root}css/themes.css`, 'utf8');
+  const blocks = css.split('html[data-theme=').slice(1);
+  for (const b of blocks) for (const v of ['--emerald-900', '--emerald-800', '--deep-rgb', '--ivory', '--ink']) assert.ok(b.includes(v), `${b.slice(1, 12)} sets ${v}`);
+  for (const f of ['css/styles.css', 'css/experience.css']) {
+    const src = readFileSync(`${root}${f}`, 'utf8').split('\n').filter((l) => !/^\s*--/.test(l)).join('\n');
+    for (const brand of ['#0B3D2E', '#062E23', '#C2A063', '#FBF7EE', '4, 36, 27', '194, 160, 99']) {
+      assert.ok(!src.includes(brand), `${f} still hard-codes ${brand}`);
+    }
+  }
+});
+
+test('themes: text contrast meets WCAG AA (4.5:1) in every theme', () => {
+  const css = readFileSync(`${root}css/themes.css`, 'utf8');
+  const parse = (block) => Object.fromEntries([...block.matchAll(/(--[\w-]+):\s*(#[0-9A-Fa-f]{6})/g)].map((m) => [m[1], m[2]]));
+  const base = parse(css.slice(css.indexOf(':root'), css.indexOf('html[data-theme=')));
+  const themes = { emerald: base };
+  for (const m of css.matchAll(/html\[data-theme="([\w-]+)"\]\s*\{([^}]*)\}/g)) themes[m[1]] = { ...base, ...parse(m[2]) };
+  const lum = (hex) => {
+    const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  };
+  const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  const pairs = [
+    ['--ink', '--ivory', 'body text'], ['--ink-soft', '--ivory', 'secondary text'], ['--gold-text', '--ivory', 'accent text'],
+    ['--gold-text', '--warm-white', 'accent text on cards'], ['--emerald-800', '--warm-white', 'headings / outline buttons'],
+    ['--warm-white', '--emerald-800', 'primary button text'], ['--gold-200', '--emerald-900', 'hero date on dark'],
+    ['--seal-ink', '--seal-3', 'seal monogram'],
+  ];
+  const failures = [];
+  for (const [name, t] of Object.entries(themes)) {
+    for (const [fg, bg, label] of pairs) {
+      const r = ratio(t[fg], t[bg]);
+      const min = label === 'seal monogram' ? 3 : 4.5; // الختم نقش كبير زخرفي: 3:1 كافٍ
+      if (r < min) failures.push(`${name}: ${label} ${fg} on ${bg} = ${r.toFixed(2)}`);
+    }
+  }
+  assert.deepEqual(failures, []);
 });

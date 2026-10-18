@@ -20,7 +20,7 @@ export function resetData() {
          rsvp_deadline = null, maps_url = null, duration_minutes = null, show_calendar_button = true,
          groom_name = 'يوسف', bride_name = 'شذى', event_date = '2027-05-27', event_time = '16:00', timezone = 'Asia/Baghdad', venue_name = 'مزرعة الفرح', venue_address = 'العابات على نهر دجلة',
          verse_text = default, intro_line = default, tagline = default, invitation_message = default, details_title = default, countdown_title = default, countdown_done_text = default, actions_title = default, rsvp_title = default, rsvp_lead = default, footer_text = default, show_children_note = default, children_note_title = default, children_note_body = default, share_closing_text = default, whatsapp_number = default, site_url = default,
-         intro_enabled = default, effects_enabled = default, music_enabled = default, music_url = default where id = 1;`);
+         intro_enabled = default, effects_enabled = default, music_enabled = default, music_url = default, theme = default where id = 1;`);
 }
 
 /** إنشاء دعوة كمدير عبر الدالة الحقيقية admin_create_invitation. */

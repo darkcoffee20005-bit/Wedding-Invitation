@@ -197,3 +197,25 @@ th[aria-sort="descending"] .th-sort::after { content: " ↓"; color: var(--gold-
 .settings-group .check { margin-bottom: 10px; }
 .settings-actions { position: sticky; bottom: 12px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; z-index: 5; }
 .settings-actions .form-error { flex-basis: 100%; }
+
+/* اختيار الهوية اللونية */
+.theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-top: 6px; }
+.theme-option__wrap { display: grid; gap: 4px; justify-items: center; }
+.theme-option { position: relative; display: grid; gap: 6px; width: 100%; cursor: pointer; text-align: center; }
+.theme-option__input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.theme-option__preview {
+  display: grid; grid-template-rows: 64px 34px; overflow: hidden;
+  border-radius: 12px; border: 2px solid var(--line); background: var(--tb);
+  box-shadow: var(--shadow); transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+.theme-option__hero { background: linear-gradient(160deg, var(--tp), color-mix(in srgb, var(--tp) 70%, #000)); display: grid; place-items: center; align-content: center; gap: 3px; }
+.theme-option__names { font-family: var(--font-serif); font-weight: 700; color: var(--ta); font-size: 1.05rem; line-height: 1; }
+.theme-option__line { width: 46%; height: 1px; background: var(--ta); opacity: .7; }
+.theme-option__body { display: flex; gap: 6px; justify-content: center; align-items: center; }
+.theme-option__card { width: 34%; height: 16px; border-radius: 4px; background: #fff; border: 1px solid color-mix(in srgb, var(--ta) 40%, transparent); }
+.theme-option__name { font-weight: 700; font-size: .92rem; color: var(--ink); }
+.theme-option:hover .theme-option__preview { transform: translateY(-2px); }
+.theme-option__input:checked + .theme-option__preview { border-color: var(--emerald-700); box-shadow: 0 0 0 3px rgba(21, 99, 75, .25), var(--shadow); }
+.theme-option__input:checked ~ .theme-option__name::before { content: "✓ "; color: var(--emerald-700); }
+.theme-option__input:focus-visible + .theme-option__preview { outline: 3px solid var(--gold-500); outline-offset: 2px; }
+.theme-option__link { font-size: .82rem; color: var(--emerald-700); }

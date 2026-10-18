@@ -200,3 +200,73 @@ test('لوحة الإدارة تتحكم بالظرف والمؤثرات وال�
     { intro_enabled: false, effects_enabled: false, music_enabled: true, music_url: 'https://cdn.example/song.mp3' },
   ]);
 });
+
+const cssVar = (page, name) => page.evaluate((n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim(), name);
+
+test('الهوية اللونية: تُختار من اللوحة وتنعكس على الصفحة وتُتذكَّر في الزيارة التالية', async ({ page }) => {
+  await useLocalSupabase(page);
+  await page.goto('/admin/');
+  await page.fill('#login-email', 'admin@test.local');
+  await page.fill('#login-password', 'Admin-Test-Pass-1');
+  await page.click('#login-submit');
+  await page.click('#tab-settings');
+  const options = page.locator('#theme-grid input[name="theme"]');
+  await expect(options).toHaveCount(7);
+  await expect(page.locator('#theme-grid input[value="emerald"]')).toBeChecked();
+  await expect(page.getByRole('radio', { name: 'وردي ذهبي' })).toBeVisible();
+  await expect(page.locator('#theme-grid a[href="../?theme=navy"]')).toHaveText('معاينة ↗');
+  await page.getByRole('radio', { name: 'وردي ذهبي' }).check({ force: true });
+  await page.click('#settings-submit');
+  await expect(page.locator('#toast')).toContainText('تم حفظ الإعدادات');
+  expect(sqlJson('select theme from wedding_settings')).toEqual([{ theme: 'rose-gold' }]);
+
+  await page.goto('/');
+  await expect(page.locator('#rsvp-submit')).toBeEnabled();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'rose-gold');
+  expect(await cssVar(page, '--emerald-800')).toBe('#4E1F2E');
+  await expect(page.locator('#countdown')).not.toHaveCSS('background-image', /11, 61, 46|6, 46, 35/);
+  expect(await page.evaluate(() => localStorage.getItem('wedding_theme'))).toBe('rose-gold');
+
+  // الزيارة التالية: الهوية تُطبَّق فورًا من الذاكرة حتى قبل وصول الإعدادات من الخادم
+  await page.route('**/functions/v1/rsvp', (route) => route.abort('connectionrefused'));
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'rose-gold');
+});
+
+test('معاينة الهوية من الرابط ?theme= دون تغيير الإعدادات، وتجاهل القيم غير الصالحة', async ({ page }) => {
+  await useLocalSupabase(page);
+  await page.goto('/?theme=navy');
+  await expect(page.locator('#rsvp-submit')).toBeEnabled();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'navy');
+  expect(await cssVar(page, '--emerald-800')).toBe('#10264A');
+  expect(sqlJson('select theme from wedding_settings')).toEqual([{ theme: 'emerald' }]);
+  expect(await page.evaluate(() => localStorage.getItem('wedding_theme'))).not.toBe('navy');
+
+  await page.goto('/?theme=<script>');
+  await expect(page.locator('#rsvp-submit')).toBeEnabled();
+  await expect(page.locator('html')).not.toHaveAttribute('data-theme', /./);
+});
+
+test('كل الهويات: بلا أخطاء، بلا تمرير أفقي، والزخارف والختم والجسيمات بألوان الهوية', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await useLocalSupabase(page, { keepIntro: true });
+  for (const t of ['emerald', 'navy', 'rose-gold', 'burgundy', 'noir', 'olive', 'royal']) {
+    await page.goto(`/?theme=${t}`);
+    await page.evaluate(() => sessionStorage.clear());
+    await page.reload();
+    await expect(page.locator('.intro')).toBeVisible();
+    const accent = await cssVar(page, '--gold-500');
+    const seal = await page.locator('.seal__half--a').evaluate((e) => getComputedStyle(e).backgroundImage);
+    const sealVar = await cssVar(page, '--seal-3');
+    const toRgb = (hex) => `rgb(${parseInt(hex.slice(1, 3), 16)}, ${parseInt(hex.slice(3, 5), 16)}, ${parseInt(hex.slice(5, 7), 16)})`;
+    expect(seal, `${t} seal`).toContain(toRgb(sealVar));
+    await page.locator('.intro__skip').click();
+    await expect(page.locator('.intro')).toHaveCount(0);
+    const orn = await page.locator('.ornament--hero').first().evaluate((e) => getComputedStyle(e).backgroundColor);
+    expect(orn, `${t} ornament`).toBe(toRgb(accent));
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow, `${t} overflow`).toBeLessThanOrEqual(0);
+  }
+  expect(errors).toEqual([]);
+});

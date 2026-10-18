@@ -8,6 +8,7 @@ import { downloadTextFile } from './calendar.js';
 import { formatDateTimeAr } from './time-utils.js';
 import { buildWhatsAppUrl, copyText } from './share.js';
 import { getUiConfig } from './config.js';
+import { THEMES, isTheme, DEFAULT_THEME } from './theme.js';
 
 const $ = (id) => document.getElementById(id);
 const PAGE_SIZE = 20;
@@ -627,6 +628,31 @@ const SETTINGS_TEXT = {
 };
 const SETTINGS_BOOL = ['rsvp_open', 'allow_open_rsvp', 'show_calendar_button', 'show_children_note', 'intro_enabled', 'effects_enabled', 'music_enabled'];
 
+// بطاقات اختيار الهوية اللونية (من قائمة js/theme.js)
+function renderThemePicker() {
+  const grid = $('theme-grid');
+  if (!grid || grid.childElementCount) return;
+  grid.append(...THEMES.map((t) => {
+    const [primary, accent, bg] = t.swatch;
+    const preview = el('span', { class: 'theme-option__preview', 'aria-hidden': 'true' }, [
+      el('span', { class: 'theme-option__hero' }, [
+        el('span', { class: 'theme-option__line' }),
+        el('span', { class: 'theme-option__names', text: 'ي & ش' }),
+        el('span', { class: 'theme-option__line' }),
+      ]),
+      el('span', { class: 'theme-option__body' }, [el('span', { class: 'theme-option__card' }), el('span', { class: 'theme-option__card' })]),
+    ]);
+    preview.style.setProperty('--tp', primary);
+    preview.style.setProperty('--ta', accent);
+    preview.style.setProperty('--tb', bg);
+    const input = el('input', { type: 'radio', name: 'theme', value: t.id, class: 'theme-option__input' });
+    const label = el('label', { class: 'theme-option' }, [input, preview, el('span', { class: 'theme-option__name', text: t.name })]);
+    const link = el('a', { class: 'theme-option__link', href: `../?theme=${t.id}`, target: '_blank', rel: 'noopener', text: 'معاينة ↗' });
+    return el('div', { class: 'theme-option__wrap' }, [label, link]);
+  }));
+}
+renderThemePicker();
+
 let settingsDirty = false;
 $('settings-form').addEventListener('input', () => { settingsDirty = true; });
 $('settings-form').addEventListener('change', () => { settingsDirty = true; });
@@ -642,6 +668,7 @@ function fillSettingsForm(s) {
   f.max_guests_per_response.value = s.max_guests_per_response ?? '';
   f.rsvp_deadline.value = toLocalInput(s.rsvp_deadline);
   for (const k of SETTINGS_BOOL) f[k].checked = Boolean(s[k]);
+  f.theme.value = isTheme(s.theme) ? s.theme : DEFAULT_THEME;
 }
 
 $('settings-reset').addEventListener('click', () => {
@@ -680,6 +707,8 @@ $('settings-form').addEventListener('submit', async (e) => {
   const deadline = f.rsvp_deadline.value.trim();
   payload.rsvp_deadline = deadline ? new Date(deadline).toISOString() : null;
   for (const k of SETTINGS_BOOL) payload[k] = f[k].checked;
+  payload.theme = f.theme.value;
+  if (!isTheme(payload.theme)) errors.push('اختر هوية ألوان من القائمة.');
   if (payload.show_children_note && !payload.children_note_body) errors.push('نص ملاحظة الأطفال مطلوب عند إظهارها.');
 
   if (errors.length) {
